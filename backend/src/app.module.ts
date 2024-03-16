@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import {NODE_ENV} from './commons/enums';
 import { AdminsModule } from './admins/admins.module';
 import { AuthModule } from './auth/auth.module';
+import { EmployeesModule } from './employees/employees.module';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { AuthModule } from './auth/auth.module';
       },
     }),
     AdminsModule,
-    AuthModule, 
+    AuthModule,
+    EmployeesModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

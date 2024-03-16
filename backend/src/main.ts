@@ -10,7 +10,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // swagger documentation setsup
-  const options = new DocumentBuilder().setTitle('HRMS').setDescription('APIs documentation for HRMS').setVersion('1.0').build();
+  const options = new DocumentBuilder().addBearerAuth().setTitle('HRMS').setDescription('APIs documentation for HRMS').setVersion('1.0').build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 

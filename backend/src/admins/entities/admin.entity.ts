@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
-import {BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Employees } from 'src/employees/entities/employees.entity';
 
 @Entity('admins')
 export class Admin extends BaseEntity{
@@ -33,6 +34,9 @@ export class Admin extends BaseEntity{
     @UpdateDateColumn({type: "timestamptz"})
     @Exclude()
     updatedAt: Date;
+
+    @OneToMany(() => Employees, (emp) => emp.admin, { cascade: true, eager: true })
+    employees: Employees[]
 
     @BeforeInsert()
     async hashPassword() {
