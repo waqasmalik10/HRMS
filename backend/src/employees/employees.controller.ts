@@ -16,4 +16,11 @@ export class EmployeesController {
     create(@Body() createEmployeeDto: CreateEmployeeDto, @Request() req) {
         return this.employeeService.create( createEmployeeDto , req.user.email);
     }
+
+    @Post('update')
+    @ApiBearerAuth()
+    @ApiOperation({summary: 'Update employee under current company.'})
+    update() {
+
+    }
 }
