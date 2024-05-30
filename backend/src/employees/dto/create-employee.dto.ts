@@ -1,4 +1,4 @@
-import { IsEmail, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsEmail, IsNumber, IsString } from "class-validator";
 
 export class CreateEmployeeDto {
 
@@ -85,5 +85,8 @@ export class CreateEmployeeDto {
 
     @IsString()
     readonly additional_roles?: string;
+
+    @IsBoolean()
+    readonly isActive?: boolean;
 
 }

@@ -104,6 +104,9 @@ export class Employees extends BaseEntity{
     @Exclude()
     updatedAt: Date;
 
+    @Column({ type: 'boolean', default: true})
+    isActive: boolean;
+
     @ManyToOne( () => Admin, (admin) => admin.employees)
     admin: Admin
 
