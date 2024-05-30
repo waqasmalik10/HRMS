@@ -5,12 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AdminsService } from 'src/admins/admins.service';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { AdditionalRoles } from './entities/additional-roles.entity';
 
 @Injectable()
 export class EmployeesService {
 
     constructor(
         @InjectRepository(Employees) private readonly employeeRepository: Repository<Employees>,
+        @InjectRepository(AdditionalRoles) private readonly additionalRolesRepository: Repository<AdditionalRoles>,
         private readonly adminService: AdminsService,
     ) { }
 
@@ -41,6 +43,10 @@ export class EmployeesService {
         const [data, total] = await this.employeeRepository.findAndCount({
           skip: page > 0 ? (page - 1) * limit : 0,
           take: limit,
+          relations: {
+            additional_roles: true
+          }
+          
         });
       
         return {
@@ -49,5 +55,9 @@ export class EmployeesService {
           page,
           limit,
         };
+      }
+
+      async getAllAdditionalRole(): Promise<AdditionalRoles[]>{
+        return await this.additionalRolesRepository.find();
       }
 }

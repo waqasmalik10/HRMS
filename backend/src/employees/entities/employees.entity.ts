@@ -1,7 +1,8 @@
 import { Exclude } from "class-transformer";
 import { Admin } from "src/admins/entities/admin.entity";
-import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
+import { AdditionalRoles } from "./additional-roles.entity";
 
 @Entity()
 export class Employees extends BaseEntity{
@@ -93,8 +94,11 @@ export class Employees extends BaseEntity{
     @Column({nullable: true})
     vehicle_registration_number: string;
 
-    @Column({nullable: true})
-    additional_roles: string;
+    @OneToMany(()=> AdditionalRoles, (additionalRoles) => additionalRoles.employees)
+    additional_roles: AdditionalRoles[];
+
+    // @OneToMany(() => Photo, (photo) => photo.user)
+    // photos: Photo[]
 
     @CreateDateColumn({type: "timestamptz"})
     @Exclude()

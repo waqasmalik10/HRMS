@@ -42,4 +42,13 @@ export class EmployeesController {
     ){
         return this.employeeService.findAll(page, limit);
     }
+
+    @Get("addition-roles")
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'get the record of additional role of employees'})
+    getAdditionalRole(){
+        return this.employeeService.getAllAdditionalRole();
+    }
+
+
 }

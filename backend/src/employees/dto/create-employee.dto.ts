@@ -1,4 +1,6 @@
-import { IsBoolean, IsEmail, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsEmail, IsNumber, IsString, ValidateNested } from "class-validator";
+import { GetAdditionalRoleDTO } from "./get-additional-role.dto";
+import { Type } from "class-transformer";
 
 export class CreateEmployeeDto {
 
@@ -83,8 +85,10 @@ export class CreateEmployeeDto {
     @IsString({})
     readonly vehicle_registration_number?: string;
 
-    @IsString()
-    readonly additional_roles?: string;
+    // @IsNumber()
+    @ValidateNested({ each: true })
+    @Type(()=>GetAdditionalRoleDTO)
+    readonly additional_roles?: GetAdditionalRoleDTO[];
 
     @IsBoolean()
     readonly isActive?: boolean;
