@@ -4,6 +4,7 @@ import {JwtService} from '@nestjs/jwt';
 import { AdminSigninDto } from './dto/admin-signin.dto';
 import { AdminsService } from '../admins/admins.service';
 import { Admin } from '../admins/entities/admin.entity';
+import { PasswordChangeDto } from './dto/password-change.dto';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +30,20 @@ export class AuthService {
         return {
             access_token: await this.jwtService.signAsync(payload),
         };
+    }
+
+    async changePassword(passwordChangeDto: PasswordChangeDto, email: string): Promise<string>{
+
+        if(passwordChangeDto.passwordConfirm !== passwordChangeDto.newPassword)
+            throw new BadRequestException(`newPassword must be equal to password confirm.`);
+
+        const admin = await this.adminService.findAdminByEmail(email);
+        if(!admin) throw new UnauthorizedException(`Not authorized to access this link.`);
+
+        if(!(await admin.validatePassword(passwordChangeDto.currentPassword)) ) 
+            throw new UnauthorizedException(`Current Password is wrong`);
+
+        return this.adminService.updatePassword(admin.id, passwordChangeDto.newPassword);
 
     }
     

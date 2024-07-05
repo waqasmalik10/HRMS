@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import {BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {BaseEntity, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Employees } from 'src/employees/entities/employees.entity';
 
@@ -39,13 +39,14 @@ export class Admin extends BaseEntity{
     employees: Employees[]
 
     @BeforeInsert()
+    @BeforeUpdate()
     async hashPassword() {
-        this.password = await bcrypt.hash(this.password, 8)
-    }
+        this.password = await bcrypt.hash(this.password, 8);
+    }    
 
     async validatePassword(password: string): Promise<boolean> {
         const isValid = await bcrypt.compare(password, this.password);
-        console.log(isValid)
+        console.log("Password validation: ",isValid)
         return isValid;
     }
     
