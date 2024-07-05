@@ -4,6 +4,7 @@ import { ApiAcceptedResponse, ApiBearerAuth, ApiOperation, ApiTags } from '@nest
 import { AdminSignupDto } from './dto/admin-signup.dto';
 import { AdminSigninDto } from './dto/admin-signin.dto';
 import { Public } from '../commons/decorators/isPublic';
+import { PasswordChangeDto } from './dto/password-change.dto';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -33,6 +34,13 @@ export class AuthController {
     @ApiOperation({summary: 'Get Loggedin user\'s profile'})
     getProfile(@Request() req) {
         return req.user;
+    }
+
+    @ApiBearerAuth()
+    @Post('change-password')
+    @ApiOperation({summary: 'change admin password.'})
+    changePassword(@Body() passwordChangeDto: PasswordChangeDto, @Request() req) {
+        return this.authService.changePassword(passwordChangeDto, req.user.email);
     }
     
 }

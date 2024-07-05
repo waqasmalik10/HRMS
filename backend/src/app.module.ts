@@ -8,11 +8,13 @@ import {NODE_ENV} from './commons/enums';
 import { AdminsModule } from './admins/admins.module';
 import { AuthModule } from './auth/auth.module';
 import { EmployeesModule } from './employees/employees.module';
+import { AttendancesModule } from './attendances/attendances.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: './.env',
+      isGlobal: true,
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().required().valid(NODE_ENV.DEVELOPMENT, NODE_ENV.PRODUCTION),
         PORT: Joi.number().default(3000),
@@ -24,6 +26,7 @@ import { EmployeesModule } from './employees/employees.module';
         FRONTEND_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRY: Joi.string().required(),
+        ACCESS_KEY: Joi.string().required(),
       })
     }),
     TypeOrmModule.forRootAsync({
@@ -45,7 +48,8 @@ import { EmployeesModule } from './employees/employees.module';
     }),
     AdminsModule,
     AuthModule,
-    EmployeesModule, 
+    EmployeesModule,
+    AttendancesModule, 
   ],
   controllers: [AppController],
   providers: [AppService],
