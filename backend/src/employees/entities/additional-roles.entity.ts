@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Employees } from "./employees.entity";
 
 @Entity()
 export class AdditionalRoles extends BaseEntity{
@@ -10,4 +11,7 @@ export class AdditionalRoles extends BaseEntity{
 
     @Column()
     description: string;
+
+    @ManyToOne(() => Employees, (employees) => employees.additional_roles)
+    employees: Employees
 }
