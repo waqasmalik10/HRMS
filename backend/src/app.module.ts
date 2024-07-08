@@ -9,6 +9,7 @@ import { AdminsModule } from './admins/admins.module';
 import { AuthModule } from './auth/auth.module';
 import { EmployeesModule } from './employees/employees.module';
 import { AttendancesModule } from './attendances/attendances.module';
+import { EmployeeIncrementsModule } from './employee-increments/employee-increments.module';
 
 @Module({
   imports: [
@@ -49,7 +50,8 @@ import { AttendancesModule } from './attendances/attendances.module';
     AdminsModule,
     AuthModule,
     EmployeesModule,
-    AttendancesModule, 
+    AttendancesModule,
+    EmployeeIncrementsModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

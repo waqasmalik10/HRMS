@@ -7,8 +7,8 @@ export class UpdateEmployeeDto extends PartialType(
   ) {}
   
 
-    // @IsEmail()
-    // readonly email: string;
+//     @IsEmail()
+//     readonly email: string;
 
 //     @IsString()
 //     readonly first_name: string;
