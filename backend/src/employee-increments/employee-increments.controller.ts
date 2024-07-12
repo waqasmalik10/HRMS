@@ -4,7 +4,7 @@ import { CreateEmployeeIncrementDto } from './dto/create-employee-increment.dto'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('employee-increments')
-@ApiTags('Emploee-increments')
+@ApiTags('Employee-Increments')
 export class EmployeeIncrementsController {
   constructor(private readonly employeeIncrementsService: EmployeeIncrementsService) { }
 
