@@ -57,6 +57,10 @@ export class EmployeesService {
         };
       }
 
+      async getEmployeeById(employeeId: number): Promise<Employees>{
+        return await this.employeeRepository.findOne({where: {id: employeeId}})
+      }
+
       async getAllAdditionalRole(): Promise<AdditionalRoles[]>{
         return await this.additionalRolesRepository.find();
       }

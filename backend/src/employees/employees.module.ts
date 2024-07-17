@@ -12,6 +12,7 @@ import { AdditionalRoles } from './entities/additional-roles.entity';
     AdminsModule
   ],
   providers: [EmployeesService],
-  controllers: [EmployeesController]
+  controllers: [EmployeesController],
+  exports: [EmployeesService]
 })
 export class EmployeesModule {}
