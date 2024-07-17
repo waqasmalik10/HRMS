@@ -3,6 +3,7 @@ import { Admin } from "src/admins/entities/admin.entity";
 import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { AdditionalRoles } from "./additional-roles.entity";
+import { EmployeeIncrement } from "src/employee-increments/entities/employee-increment.entity";
 
 @Entity()
 export class Employees extends BaseEntity{
@@ -97,8 +98,8 @@ export class Employees extends BaseEntity{
     @OneToMany(()=> AdditionalRoles, (additionalRoles) => additionalRoles.employees)
     additional_roles: AdditionalRoles[];
 
-    // @OneToMany(() => Photo, (photo) => photo.user)
-    // photos: Photo[]
+    @OneToMany(() => EmployeeIncrement, (employeeIncrement) => employeeIncrement.employee, { cascade: true, eager: true })
+    employeeIncrements: EmployeeIncrement[];
 
     @CreateDateColumn({type: "timestamptz"})
     @Exclude()
