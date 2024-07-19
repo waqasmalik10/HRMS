@@ -1,11 +1,8 @@
 import axios from "axios";
 
-// console.log(import.meta.env.VITE_APP_TITLE); 
-// console.log(import.meta.env.VITE_APP_BACKEND_API_URL); 
-
 const baseURL: string = import.meta.env.VITE_APP_BACKEND_API_URL || "";
 
-const userToken = JSON.parse(localStorage.getItem("user") || "{}")?.token;
+const userToken = JSON.parse(localStorage.getItem("user") || "{}")?.access_token;
 
 const axiosInstance = axios.create({
   baseURL,
@@ -16,9 +13,10 @@ const axiosInstance = axios.create({
   },
 });
 
-
 function setAuthToken(token = "") {
+  console.log("tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn:",token);
   axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+  console.log("axiosInstanceeeeeeeeeeee:",axiosInstance.defaults.headers.common.Authorization );
 }
 
 const methods = {

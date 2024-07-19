@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import http from "../../services/http/index"
+import { useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
@@ -33,6 +35,16 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
 
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+
+    const userToken = JSON.parse(localStorage.getItem("user") as string)?.access_token;
+    if(userToken){
+      window.location.href = "/";
+    }
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,7 +57,12 @@ export default function SignIn() {
         email: data.get('email'),
         password: data.get('password'),
       });
-      console.log(res);
+      console.log(".......................................................");
+      http.setAuthToken(res.data.access_token);
+      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.",res);
+      localStorage.setItem("user", JSON.stringify(res.data) );
+      navigate('/');
+      // window.location.href = "/";
     }catch(err){
       console.log("Login error: ", err);
     }
