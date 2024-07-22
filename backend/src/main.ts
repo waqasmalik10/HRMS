@@ -9,6 +9,8 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   const configService = app.get(ConfigService);
 
+  app.enableCors();
+
   // swagger documentation setsup
   const options = new DocumentBuilder().addBearerAuth().setTitle('HRMS').setDescription('APIs documentation for HRMS').setVersion('1.0').build();
   const document = SwaggerModule.createDocument(app, options);
