@@ -1,34 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import { useState } from 'react'
+import { useEffect, useState } from 'react';
 import './App.css'
+import './Components/login/signin'
+import { jwtDecode } from 'jwt-decode';
+import { RouterProvider } from 'react-router-dom';
+import router from './Router';
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user") as string)
+  );
+
+  const checkTokenExpiration = () => {
+    const userToken = JSON.parse(localStorage.getItem("user") as string)?.access_token;
+    if (!userToken) {
+      setUser(null);
+      return;
+    }
+
+    const decodedToken: any = jwtDecode(userToken) || "";
+    const expirationTime = decodedToken?.exp * 1000;
+    const currentTime = Date.now();
+    const timeUntilExpiration = expirationTime - currentTime;
+
+    if (timeUntilExpiration > 0) {
+      setTimeout(() => {
+        localStorage.removeItem("user");
+        setUser(null);
+        window.location.href = "/signin"; // Redirect to the login page
+      }, timeUntilExpiration);
+    } else {
+      localStorage.removeItem("user");
+      setUser(null);
+      window.location.href = "/signin"; // Redirect to the login page
+    }
+  };
+
+  // Token expiration check
+  useEffect(() => {
+    checkTokenExpiration();
+  }, []);
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <RouterProvider router={router} />
   )
 }
 
