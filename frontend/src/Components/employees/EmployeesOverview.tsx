@@ -18,9 +18,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../../common/ListItems';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
+import EmployeesTable from './EmployeesTable';
+import Button from '@mui/material/Button';
+import AddEmployeeModal from './AddEmployeeModal';
+// import Chart from './Chart';
+// import Deposits from './Deposits';
+// import Orders from './Orders';
 
 function Copyright(props: any) {
   return (
@@ -88,7 +91,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function EmployeesOverview() {
+  const [openAddEmployeeModel, setOpenAddEmployeeModel] = React.useState(false);
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -123,7 +127,7 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Employees
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -167,8 +171,9 @@ export default function Dashboard() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
+            <Button variant="outlined" onClick={()=>{setOpenAddEmployeeModel(true)}}>Add Employees</Button>
               {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
+              {/* <Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
                     p: 2,
@@ -179,9 +184,9 @@ export default function Dashboard() {
                 >
                   <Chart />
                 </Paper>
-              </Grid>
+              </Grid> */}
               {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
+              {/* <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
                     p: 2,
@@ -192,11 +197,11 @@ export default function Dashboard() {
                 >
                   <Deposits />
                 </Paper>
-              </Grid>
+              </Grid> */}
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
+                  <EmployeesTable />
                 </Paper>
               </Grid>
             </Grid>
@@ -204,6 +209,7 @@ export default function Dashboard() {
           </Container>
         </Box>
       </Box>
+      <AddEmployeeModal open={openAddEmployeeModel} setOpen={setOpenAddEmployeeModel}/>
     </ThemeProvider>
   );
 }

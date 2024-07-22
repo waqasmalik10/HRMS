@@ -10,23 +10,28 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
+const navClick = (moveTo='/')=>{
+  console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+  window.location.href = moveTo;
+}
+
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
+    <ListItemButton onClick={()=>{  navClick('/')  }} >
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton onClick={()=>{  navClick('/employees')  }} >
       <ListItemIcon>
-        <ShoppingCartIcon />
+        <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <ListItemText primary="Empoyees" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-        <PeopleIcon />
+        <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Customers" />
     </ListItemButton>

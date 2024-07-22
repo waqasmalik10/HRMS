@@ -9,6 +9,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Dashboard from './Components/dashboard/Dashboard';
 import SignIn from './Components/login/signin';
 import ProtectedRoute from './ProtectedRoute';
+import EmployeesOverview from './Components/employees/EmployeesOverview';
 
 // Function to get the access token from cookies
 const getAccessToken = () => {
@@ -40,6 +41,10 @@ const router = createBrowserRouter(
           path: '/',
           element: <Dashboard />
         },
+        {
+          path: '/employees',
+          element: <EmployeesOverview />
+        }
       ]
     },
     {
