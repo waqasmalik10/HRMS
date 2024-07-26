@@ -8,6 +8,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
+import dayjs, { Dayjs } from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import http from '../../services/http';
+
 interface AddEmployeeModalProps {
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -16,6 +23,11 @@ interface AddEmployeeModalProps {
 export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProps) {
     //   const [open, setOpen] = React.useState(false);
     const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
+    const [joiningDate, setJoiningDate] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
+    const [fullTimeJoiningDate, setFullTimeJoiningDate] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
+    const [lastIncrementDate, setLastIncrementDate] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
+    const [cnicDOB, setCnicDOB] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
+    const [actualDOB, setActualDOB] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
 
     const handleClickOpen = (scrollType: DialogProps['scroll']) => () => {
         setOpen(true);
@@ -40,20 +52,52 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
 
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log("data:::",data.getAll(''));
-        console.log({
-            EmployeeId: data.get('employee_id'),
-            email: data.get('email'),
-            password: data.get('password'),
+        
+        const employeeData = {
+            "employee_id": parseInt((data.get('employee_id')||'').toString()),
+            "email": data.get('email'),
+            "password": data.get('password'),
+            "first_name": data.get('first_name'),
+            "last_name": data.get('last_name'),
+            "bank_name": data.get('bank_name'),
+            "bank_account_title": data.get('bank_account_title'),
+            "bank_branch_code": data.get('bank_branch_code'),
+            "bank_account_number": data.get('bank_account_number'),
+            "bank_iban_number": data.get('bank_iban_number'),
+            "joining_date": joiningDate,//data.get('joining_date'),
+            "full_time_joining_date": fullTimeJoiningDate,//,data.get('full_time_joining_date'),
+            "initial_base_salary": parseInt((data.get('initial_base_salary')||'').toString()),
+            "current_base_salary": parseInt((data.get('current_base_salary')||'').toString()),
+            "last_increment_date": lastIncrementDate,//data.get('last_increment_date'),
+            "last_increment_amount": parseInt((data.get('last_increment_amount')||'').toString()),
+            "home_address": data.get('home_address'),
+            "city": data.get('city'),
+            "state": data.get('state'),
+            "zip_code": data.get('zip_code'),
+            "country": data.get('country'),
+            "designation": data.get('designation'),
+            "cnic": data.get('cnic'),
+            "id_card_date_of_birth": cnicDOB,//data.get('id_card_date_of_birth'),
+            "actual_date_of_birth": actualDOB, //data.get('actual_date_of_birth'),
+            "hobbies": data.get('hobbies'),
+            "vehicle_registration_number": data.get('vehicle_registration_number'),
+            "isActive": true
+        }
 
-        });
+        console.log(">>>>><<<<<><><><",employeeData);
+
+        const res = await http.post<any>('/employees/create',employeeData);
+
+        console.log("resspspspspsps",res);
+
+
 
     }
 
     return (
         <React.Fragment>
-            <Button onClick={handleClickOpen('paper')}>scroll=paper</Button>
-            <Button onClick={handleClickOpen('body')}>scroll=body</Button>
+            {/* <Button onClick={handleClickOpen('paper')}>scroll=paper</Button>
+            <Button onClick={handleClickOpen('body')}>scroll=body</Button> */}
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -70,6 +114,7 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             tabIndex={-1}
                         > */}
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+
                         <TextField
                             margin="normal"
                             required
@@ -160,15 +205,24 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             name="bank_iban_number"
                             autoFocus
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="full_time_joining_date"
-                            label="Full Time Joining Date"
-                            name="full_time_joining_date"
-                            autoFocus
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={['DatePicker', 'DatePicker']}>
+                                <DatePicker
+                                    label="Joining Date"
+                                    name="joining_date"
+                                    autoFocus
+                                    value={joiningDate}
+                                    onChange={(newValue) => setJoiningDate(newValue)}
+                                />
+                                <DatePicker
+                                    label="Full Time Joining Date"
+                                    name="full_time_joining_date"
+                                    autoFocus
+                                    value={fullTimeJoiningDate}
+                                    onChange={(newValue) => setFullTimeJoiningDate(newValue)}
+                                />
+                            </DemoContainer>
+                        </LocalizationProvider>
                         <TextField
                             margin="normal"
                             required
@@ -187,15 +241,18 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             name="current_base_salary"
                             autoFocus
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="last_increment_date"
-                            label="Last Increment Date"
-                            name="last_increment_date"
-                            autoFocus
-                        />
+
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={['DatePicker', 'DatePicker']}>
+                                <DatePicker
+                                    label="Last Increment Date"
+                                    name="last_increment_date"
+                                    autoFocus
+                                    value={lastIncrementDate}
+                                    onChange={(newValue) => setLastIncrementDate(newValue)}
+                                />
+                            </DemoContainer>
+                        </LocalizationProvider>
                         <TextField
                             margin="normal"
                             required
@@ -268,24 +325,25 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             name="cnic"
                             autoFocus
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="id_card_date_of_birth"
-                            label="Id card Date of Birth"
-                            name="id_card_date_of_birth"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="actual_date_of_birth"
-                            label="Actual Date of Birth"
-                            name="actual_date_of_birth"
-                            autoFocus
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={['DatePicker', 'DatePicker']}>
+                                <DatePicker
+                                    label="Id card Date of Birth"
+                                    name="id_card_date_of_birth"
+                                    autoFocus
+                                    value={cnicDOB}
+                                    onChange={(newValue) => setCnicDOB(newValue)}
+                                />
+                                <DatePicker
+                                    label="Actual Date of Birth"
+                                    name="actual_date_of_birth"
+                                    autoFocus
+                                    value={actualDOB}
+                                    onChange={(newValue) => setActualDOB(newValue)}
+                                />
+                            </DemoContainer>
+                        </LocalizationProvider>
+
                         <TextField
                             margin="normal"
                             required
