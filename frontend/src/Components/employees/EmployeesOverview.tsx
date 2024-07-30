@@ -92,11 +92,32 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme();
 
 export default function EmployeesOverview() {
-  const [openAddEmployeeModel, setOpenAddEmployeeModel] = React.useState(false);
-  const [open, setOpen] = React.useState(true);
+  const [openEmployeeModel, setOpenEmployeeModel] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [modalState, setModalState] = React.useState("");
+  const [employeeId, setEmployeeId] = React.useState(0);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const handleViewEmployee = (id: number) => {
+    console.log(`employee ${id} to view`);
+    setModalState("view");
+    setEmployeeId(id);
+    setOpenEmployeeModel(true);
+  }
+
+  const handleEditEmployee = (id: number) => {
+    console.log(`employee ${id} to edit`);
+    setModalState("edit");
+    setEmployeeId(id);
+    setOpenEmployeeModel(true);
+  }
+
+  const handleDeleteEmployee = (id: number) => {
+    console.log(`employee ${id} to delete`);
+    
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -171,7 +192,11 @@ export default function EmployeesOverview() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-            <Button variant="outlined" onClick={()=>{setOpenAddEmployeeModel(true)}}>Add Employees</Button>
+              <Button variant="outlined" onClick={() => { 
+                setEmployeeId(0);
+                setModalState('add');
+                setOpenEmployeeModel(true); 
+                }}>Add Employees</Button>
               {/* Chart */}
               {/* <Grid item xs={12} md={8} lg={9}>
                 <Paper
@@ -201,7 +226,10 @@ export default function EmployeesOverview() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <EmployeesTable />
+                  <EmployeesTable
+                    handleViewEmployee={handleViewEmployee}
+                    handleEditEmployee={handleEditEmployee}
+                    handleDeleteEmployee={handleDeleteEmployee} />
                 </Paper>
               </Grid>
             </Grid>
@@ -209,7 +237,12 @@ export default function EmployeesOverview() {
           </Container>
         </Box>
       </Box>
-      <AddEmployeeModal open={openAddEmployeeModel} setOpen={setOpenAddEmployeeModel}/>
+      <AddEmployeeModal
+        open={openEmployeeModel}
+        setOpen={setOpenEmployeeModel} 
+        modalState={modalState}
+        employeeId={employeeId}
+        />
     </ThemeProvider>
   );
 }

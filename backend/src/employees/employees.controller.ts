@@ -33,20 +33,27 @@ export class EmployeesController {
         return this.employeeService.update(+id, { isActive: false }, req.user.email);
     }
 
+    @Get('employee/:id')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'get the record of employee by id' })
+    getEmployee(@Query('id') id: number) {
+        return this.employeeService.findEmployee(id);
+    }
+
     @Get()
     @ApiBearerAuth()
     @ApiOperation({ summary: 'get the record of employee under current company' })
     getEmployees(
         @Query('page') page: number,
         @Query('limit') limit: number,
-    ){
+    ) {
         return this.employeeService.findAll(page, limit);
     }
 
     @Get("addition-roles")
     @ApiBearerAuth()
-    @ApiOperation({ summary: 'get the record of additional role of employees'})
-    getAdditionalRole(){
+    @ApiOperation({ summary: 'get the record of additional role of employees' })
+    getAdditionalRole() {
         return this.employeeService.getAllAdditionalRole();
     }
 

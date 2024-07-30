@@ -39,6 +39,10 @@ export class EmployeesService {
         return await this.employeeRepository.findOne({ where: { id: id } });
     }
 
+    async findEmployee(id: number): Promise<Employees>{
+      const employee = await this.employeeRepository.findOne({where: {id: id}});
+      return employee;
+    }
     async findAll(page = 1, limit = 10): Promise<{ data: Employees[]; total: number; page: number; limit: number }> {
         const [data, total] = await this.employeeRepository.findAndCount({
           skip: page > 0 ? (page - 1) * limit : 0,

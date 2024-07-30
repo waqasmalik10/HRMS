@@ -18,9 +18,11 @@ import http from '../../services/http';
 interface AddEmployeeModalProps {
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    modalState: string;
+    employeeId: number;
 }
 
-export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProps) {
+export default function AddEmployeeModal({ open, setOpen, modalState, employeeId }: AddEmployeeModalProps) {
     //   const [open, setOpen] = React.useState(false);
     const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
     const [joiningDate, setJoiningDate] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
@@ -28,6 +30,7 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
     const [lastIncrementDate, setLastIncrementDate] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
     const [cnicDOB, setCnicDOB] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
     const [actualDOB, setActualDOB] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
+    const [employee, setEmployee] = React.useState<any>();
 
     const handleClickOpen = (scrollType: DialogProps['scroll']) => () => {
         setOpen(true);
@@ -37,6 +40,7 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
     const handleClose = () => {
         setOpen(false);
     };
+
 
     const descriptionElementRef = React.useRef<HTMLElement>(null);
     React.useEffect(() => {
@@ -48,13 +52,38 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
         }
     }, [open]);
 
+    const getEmployeeData = async () => {
+        const response: any = await http.get<any>(`/employees/employee/{id}?id=${employeeId}`);
+        setEmployee(response.data);
+        console.log("employee data: ", employee);
+        if(employee){
+            setJoiningDate(dayjs(employee.joining_date));
+            setFullTimeJoiningDate(dayjs(employee.full_time_joining_date));
+            setLastIncrementDate(dayjs(employee.last_increment_date));
+            setCnicDOB(dayjs(employee.id_card_date_of_birth));
+            setActualDOB(dayjs(employee.actual_date_of_birth));
+        }
+        
+    }
+
+    React.useEffect(() => {
+        if ((modalState === 'view') || (modalState === 'edit')) {
+            getEmployeeData();
+        }
+        console.log("modalstate: ", modalState);
+        if(modalState==='add'){
+            console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            setEmployee(null);
+        }
+    }, [modalState, employeeId])
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        
+
         const employeeData = {
-            "employee_id": parseInt((data.get('employee_id')||'').toString()),
+            "employee_id": parseInt((data.get('employee_id') || '').toString()),
             "email": data.get('email'),
             "password": data.get('password'),
             "first_name": data.get('first_name'),
@@ -66,10 +95,10 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
             "bank_iban_number": data.get('bank_iban_number'),
             "joining_date": joiningDate,//data.get('joining_date'),
             "full_time_joining_date": fullTimeJoiningDate,//,data.get('full_time_joining_date'),
-            "initial_base_salary": parseInt((data.get('initial_base_salary')||'').toString()),
-            "current_base_salary": parseInt((data.get('current_base_salary')||'').toString()),
+            "initial_base_salary": parseInt((data.get('initial_base_salary') || '').toString()),
+            "current_base_salary": parseInt((data.get('current_base_salary') || '').toString()),
             "last_increment_date": lastIncrementDate,//data.get('last_increment_date'),
-            "last_increment_amount": parseInt((data.get('last_increment_amount')||'').toString()),
+            "last_increment_amount": parseInt((data.get('last_increment_amount') || '').toString()),
             "home_address": data.get('home_address'),
             "city": data.get('city'),
             "state": data.get('state'),
@@ -84,11 +113,11 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
             "isActive": true
         }
 
-        console.log(">>>>><<<<<><><><",employeeData);
+        console.log(">>>>><<<<<><><><", employeeData);
 
-        const res = await http.post<any>('/employees/create',employeeData);
+        const res = await http.post<any>('/employees/create', employeeData);
 
-        console.log("resspspspspsps",res);
+        console.log("resspspspspsps", res);
 
 
 
@@ -123,6 +152,7 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             label="Employee id"
                             name="employee_id"
                             autoFocus
+                            value={(employee) ? employee.employee_id : ''}
                         />
                         <TextField
                             margin="normal"
@@ -131,8 +161,10 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="email"
                             label="Email Address"
                             name="email"
-                            autoFocus
+                            value={(employee) ? employee.email : ''}
+                            // autoFocus
                         />
+                        {modalState==='add' &&
                         <TextField
                             margin="normal"
                             required
@@ -141,7 +173,7 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             label="Password"
                             type="password"
                             id="password"
-                        />
+                        />}
                         <TextField
                             margin="normal"
                             required
@@ -149,7 +181,9 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="first_name"
                             label="First Name"
                             name="first_name"
-                            autoFocus
+                            value={(employee) ? employee.first_name : ''}
+
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -158,7 +192,9 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="last_name"
                             label="Last Name"
                             name="last_name"
-                            autoFocus
+                            value={(employee) ? employee.last_name : ''}
+
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -167,7 +203,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="bank_name"
                             label="Bank Name"
                             name="bank_name"
-                            autoFocus
+                            value={(employee) ? employee.bank_name : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -176,7 +213,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="bank_account_title"
                             label="Bank Account Title"
                             name="bank_account_title"
-                            autoFocus
+                            value={(employee) ? employee.bank_account_title : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -185,7 +223,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="bank_branch_code"
                             label="Bank Branch Code"
                             name="bank_branch_code"
-                            autoFocus
+                            value={(employee) ? employee.bank_branch_code : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -194,7 +233,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="bank_account_number"
                             label="Bank Account Number"
                             name="bank_account_number"
-                            autoFocus
+                            value={(employee) ? employee.bank_account_number : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -203,21 +243,22 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="bank_iban_number"
                             label="Bank Iban Number"
                             name="bank_iban_number"
-                            autoFocus
+                            value={(employee) ? employee.bank_iban_number : ''}
+                            // autoFocus
                         />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DemoContainer components={['DatePicker', 'DatePicker']}>
                                 <DatePicker
                                     label="Joining Date"
                                     name="joining_date"
-                                    autoFocus
+                                    // autoFocus
                                     value={joiningDate}
                                     onChange={(newValue) => setJoiningDate(newValue)}
                                 />
                                 <DatePicker
                                     label="Full Time Joining Date"
                                     name="full_time_joining_date"
-                                    autoFocus
+                                    // autoFocus
                                     value={fullTimeJoiningDate}
                                     onChange={(newValue) => setFullTimeJoiningDate(newValue)}
                                 />
@@ -230,7 +271,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="initial_base_salary"
                             label="Initial Base Salary"
                             name="initial_base_salary"
-                            autoFocus
+                            value={(employee) ? employee.initial_base_salary : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -239,7 +281,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="current_base_salary"
                             label="Current Base Salary"
                             name="current_base_salary"
-                            autoFocus
+                            value={(employee) ? employee.current_base_salary : ''}
+                            // autoFocus
                         />
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -247,7 +290,7 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                                 <DatePicker
                                     label="Last Increment Date"
                                     name="last_increment_date"
-                                    autoFocus
+                                    // autoFocus
                                     value={lastIncrementDate}
                                     onChange={(newValue) => setLastIncrementDate(newValue)}
                                 />
@@ -260,7 +303,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="last_increment_amount"
                             label="Last Increment Amount"
                             name="last_increment_amount"
-                            autoFocus
+                            value={(employee) ? employee.last_increment_amount : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -269,7 +313,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="home_address"
                             label="Home Address"
                             name="home_address"
-                            autoFocus
+                            value={(employee) ? employee.home_address : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -278,7 +323,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="city"
                             label="City"
                             name="city"
-                            autoFocus
+                            value={(employee) ? employee.city : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -287,7 +333,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="state"
                             label="State"
                             name="state"
-                            autoFocus
+                            value={(employee) ? employee.state : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -296,7 +343,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="zip_code"
                             label="Zip Code"
                             name="zip_code"
-                            autoFocus
+                            value={(employee) ? employee.zip_code : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -305,7 +353,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="country"
                             label="Country"
                             name="country"
-                            autoFocus
+                            value={(employee) ? employee.country : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -314,7 +363,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="designation"
                             label="Designation"
                             name="designation"
-                            autoFocus
+                            value={(employee) ? employee.designation : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -323,21 +373,22 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="cnic"
                             label="CNIC"
                             name="cnic"
-                            autoFocus
+                            value={(employee) ? employee.cnic : ''}
+                            // autoFocus
                         />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DemoContainer components={['DatePicker', 'DatePicker']}>
                                 <DatePicker
                                     label="Id card Date of Birth"
                                     name="id_card_date_of_birth"
-                                    autoFocus
+                                    // autoFocus
                                     value={cnicDOB}
                                     onChange={(newValue) => setCnicDOB(newValue)}
                                 />
                                 <DatePicker
                                     label="Actual Date of Birth"
                                     name="actual_date_of_birth"
-                                    autoFocus
+                                    // autoFocus
                                     value={actualDOB}
                                     onChange={(newValue) => setActualDOB(newValue)}
                                 />
@@ -351,7 +402,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="hobbies"
                             label="Hobbies"
                             name="hobbies"
-                            autoFocus
+                            value={(employee) ? employee.hobbies : ''}
+                            // autoFocus
                         />
                         <TextField
                             margin="normal"
@@ -360,7 +412,8 @@ export default function AddEmployeeModal({ open, setOpen }: AddEmployeeModalProp
                             id="vehicle_registration_number"
                             label="Vehicle Registration Number"
                             name="vehicle_registration_number"
-                            autoFocus
+                            value={(employee) ? employee.vehicle_registration_number : ''}
+                            // autoFocus
                         />
                         <Button
                             type="submit"
