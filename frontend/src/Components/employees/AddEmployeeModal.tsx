@@ -67,7 +67,7 @@ export default function AddEmployeeModal({ open, setOpen, modalState, employeeId
     }
 
     React.useEffect(() => {
-        if ((modalState === 'view') || (modalState === 'edit')) {
+        if (modalState === 'edit') {
             getEmployeeData();
         }
         console.log("modalstate: ", modalState);
@@ -118,9 +118,6 @@ export default function AddEmployeeModal({ open, setOpen, modalState, employeeId
         const res = await http.post<any>('/employees/create', employeeData);
 
         console.log("resspspspspsps", res);
-
-
-
     }
 
     return (
@@ -134,7 +131,7 @@ export default function AddEmployeeModal({ open, setOpen, modalState, employeeId
                 aria-labelledby="scroll-dialog-title"
                 aria-describedby="scroll-dialog-description"
             >
-                <DialogTitle id="scroll-dialog-title">Add Employee</DialogTitle>
+                <DialogTitle id="scroll-dialog-title">{employee ? "Edit": "Add"} Employee</DialogTitle>
 
                 <DialogContent dividers={scroll === 'paper'}>
                     {/* <DialogContentText
@@ -420,7 +417,7 @@ export default function AddEmployeeModal({ open, setOpen, modalState, employeeId
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Add Employee
+                            {employee ? "Edit": "Add"} Employee
                         </Button>
 
                     </Box>

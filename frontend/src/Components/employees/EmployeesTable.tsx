@@ -24,6 +24,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import http from "../../services/http";
 import { Link } from "react-router-dom";
+import AlertDialog from "../../common/comfirmationModal";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -175,7 +176,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -185,7 +186,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               "aria-label": "select all desserts"
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -282,6 +283,7 @@ export default function EmployeesTable(props: EmployeesTableProps) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
 
   const [employees, setEmployees] = React.useState<Employee[]>([]);
 
@@ -395,15 +397,15 @@ export default function EmployeesTable(props: EmployeesTableProps) {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
+                    // onClick={(event) => handleClick(event, row.id)}
+                    // role="checkbox"
+                    // aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.id}
-                    selected={isItemSelected}
+                    // selected={isItemSelected}
                     sx={{ cursor: "pointer" }}
                   >
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
@@ -411,7 +413,7 @@ export default function EmployeesTable(props: EmployeesTableProps) {
                           "aria-labelledby": labelId
                         }}
                       />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell
                       component="th"
                       id={labelId}
@@ -423,11 +425,11 @@ export default function EmployeesTable(props: EmployeesTableProps) {
                       {/* </Link> */}
 
                     </TableCell>
-                    <TableCell align="right">{row.email}</TableCell>
-                    <TableCell align="right">{row.designation}</TableCell>
-                    <TableCell align="right">{row.joining_date}</TableCell>
-                    <TableCell align="right">{row.cnic}</TableCell>
-                    <TableCell align="right">
+                    <TableCell align="left">{row.email}</TableCell>
+                    <TableCell align="left">{row.designation}</TableCell>
+                    <TableCell align="left">{row.joining_date}</TableCell>
+                    <TableCell align="left">{row.cnic}</TableCell>
+                    <TableCell align="left">
                       <Tooltip title="view">
                         <IconButton onClick={() => { handleViewEmployee(row.id) }}>
                           <VisibilityIcon />
@@ -474,6 +476,11 @@ export default function EmployeesTable(props: EmployeesTableProps) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       />
+        <AlertDialog 
+          modalText="sdsadasdsda"
+          open={openDeleteModal}
+          setOpen={setOpenDeleteModal}
+        />
     </Box>
   );
 }

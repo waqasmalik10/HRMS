@@ -21,6 +21,7 @@ import { mainListItems, secondaryListItems } from '../../common/ListItems';
 import EmployeesTable from './EmployeesTable';
 import Button from '@mui/material/Button';
 import AddEmployeeModal from './AddEmployeeModal';
+import AlertDialog from '../../common/comfirmationModal';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -96,6 +97,7 @@ export default function EmployeesOverview() {
   const [open, setOpen] = React.useState(false);
   const [modalState, setModalState] = React.useState("");
   const [employeeId, setEmployeeId] = React.useState(0);
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -116,7 +118,7 @@ export default function EmployeesOverview() {
 
   const handleDeleteEmployee = (id: number) => {
     console.log(`employee ${id} to delete`);
-    
+    setOpenDeleteModal(true);
   }
 
   return (
@@ -243,6 +245,11 @@ export default function EmployeesOverview() {
         modalState={modalState}
         employeeId={employeeId}
         />
+        <AlertDialog 
+        modalText="Do you really want to delete this row."
+        open={openDeleteModal}
+        setOpen={setOpenDeleteModal}
+      />
     </ThemeProvider>
   );
 }
