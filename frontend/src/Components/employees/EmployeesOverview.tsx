@@ -119,6 +119,7 @@ export default function EmployeesOverview() {
   const handleDeleteEmployee = (id: number) => {
     console.log(`employee ${id} to delete`);
     setOpenDeleteModal(true);
+    setEmployeeId(id);
   }
 
   return (
@@ -249,6 +250,7 @@ export default function EmployeesOverview() {
         modalText="Do you really want to delete this row."
         open={openDeleteModal}
         setOpen={setOpenDeleteModal}
+        employeId={employeeId}
       />
     </ThemeProvider>
   );

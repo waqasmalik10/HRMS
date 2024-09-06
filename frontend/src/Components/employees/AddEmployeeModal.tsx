@@ -53,7 +53,7 @@ export default function AddEmployeeModal({ open, setOpen, modalState, employeeId
     }, [open]);
 
     const getEmployeeData = async () => {
-        const response: any = await http.get<any>(`/employees/employee/{id}?id=${employeeId}`);
+        const response: any = await http.get<any>(`/employees/employee/${employeeId}`);
         setEmployee(response.data);
         console.log("employee data: ", employee);
         if(employee){
@@ -72,7 +72,7 @@ export default function AddEmployeeModal({ open, setOpen, modalState, employeeId
         }
         console.log("modalstate: ", modalState);
         if(modalState==='add'){
-            console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            console.log("add new employee");
             setEmployee(null);
         }
     }, [modalState, employeeId])

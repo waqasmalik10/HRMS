@@ -431,9 +431,10 @@ export default function EmployeesTable(props: EmployeesTableProps) {
                     <TableCell align="left">{row.cnic}</TableCell>
                     <TableCell align="left">
                       <Tooltip title="view">
-                        <IconButton onClick={() => { handleViewEmployee(row.id) }}>
+                        {/* <IconButton onClick={() => { handleViewEmployee(row.id) }}>
                           <VisibilityIcon />
-                        </IconButton>
+                        </IconButton> */}
+                        <Link to={`/employee-detail?employeeid=${row.id}`}><VisibilityIcon /></Link>
                       </Tooltip>
                       <Tooltip title="edit">
                         <IconButton onClick={() => { handleEditEmployee(row.id) }}>
@@ -476,11 +477,11 @@ export default function EmployeesTable(props: EmployeesTableProps) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       />
-        <AlertDialog 
+        {/* <AlertDialog 
           modalText="sdsadasdsda"
           open={openDeleteModal}
           setOpen={setOpenDeleteModal}
-        />
+        /> */}
     </Box>
   );
 }

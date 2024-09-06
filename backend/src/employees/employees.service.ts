@@ -45,6 +45,7 @@ export class EmployeesService {
     }
     async findAll(page = 1, limit = 10): Promise<{ data: Employees[]; total: number; page: number; limit: number }> {
         const [data, total] = await this.employeeRepository.findAndCount({
+          where: { isActive: true},
           skip: page > 0 ? (page - 1) * limit : 0,
           take: limit,
           relations: {

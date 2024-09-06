@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Put, Query, Request } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Patch, Post, Put, Query, Request } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { EmployeesService } from './employees.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -36,7 +36,9 @@ export class EmployeesController {
     @Get('employee/:id')
     @ApiBearerAuth()
     @ApiOperation({ summary: 'get the record of employee by id' })
-    getEmployee(@Query('id') id: number) {
+    getEmployee(@Param('id') id: number) {
+        console.log("id is : ", id);
+        if(isNaN(id)) throw new BadRequestException();//return {error: "Not a number"};
         return this.employeeService.findEmployee(id);
     }
 

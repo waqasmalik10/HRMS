@@ -5,18 +5,30 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import http from '../services/http';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     open: boolean;
-    setOpen: (open: boolean)=>void;
-    modalText: string
+    setOpen: (open: boolean) => void;
+    modalText: string;
+    employeId: number;
 }
 
-export default function AlertDialog({open, setOpen, modalText}: Props) {
+export default function AlertDialog({ open, setOpen, modalText, employeId }: Props) {
     // const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const navigate = useNavigate();
+
+    const handleYes = async () => {
+        try {
+            console.log("deleting enployee id ", employeId);
+            const res = await http.patch<any>(`/employees/deactivate/${employeId}`);
+            navigate(0);
+            console.log(res);
+        } catch (err) {
+            console.log("error in getting employees: ", err);
+        }
     };
 
     const handleClose = () => {
@@ -44,8 +56,8 @@ export default function AlertDialog({open, setOpen, modalText}: Props) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>No</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        Confirm
+                    <Button onClick={handleYes} autoFocus>
+                        Yes
                     </Button>
                 </DialogActions>
             </Dialog>
