@@ -10,6 +10,7 @@ import Dashboard from './Components/dashboard/Dashboard';
 import SignIn from './Components/login/signin';
 import ProtectedRoute from './ProtectedRoute';
 import EmployeesOverview from './Components/employees/EmployeesOverview';
+import EmployeeDetail from './Components/employees/EmployeeDetail';
 
 // Function to get the access token from cookies
 const getAccessToken = () => {
@@ -44,6 +45,10 @@ const router = createBrowserRouter(
         {
           path: '/employees',
           element: <EmployeesOverview />
+        },
+        {
+          path: '/employee-detail',
+          element: <EmployeeDetail />
         }
       ]
     },

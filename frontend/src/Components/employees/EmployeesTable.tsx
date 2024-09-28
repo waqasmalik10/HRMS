@@ -18,9 +18,13 @@ import Tooltip from "@mui/material/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import http from "../../services/http";
+import { Link } from "react-router-dom";
+import AlertDialog from "../../common/comfirmationModal";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -75,6 +79,7 @@ interface Employee {
   cnic: string;
   city: string;
   country: string;
+  action: string;
 }
 
 interface HeadCell {
@@ -89,14 +94,14 @@ const headCells: readonly HeadCell[] = [
     id: "first_name",
     numeric: false,
     disablePadding: true,
-    label: "First Name"
+    label: "Name"
   },
-  {
-    id: "last_name",
-    numeric: false,
-    disablePadding: false,
-    label: "Last Name"
-  },
+  // {
+  //   id: "last_name",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "Last Name"
+  // },
   {
     id: "email",
     numeric: false,
@@ -122,17 +127,23 @@ const headCells: readonly HeadCell[] = [
     label: "CNIC"
   },
   {
-    id: "city",
+    id: "action",
     numeric: false,
     disablePadding: false,
-    label: "City"
+    label: "Action"
   },
-  {
-    id: "country",
-    numeric: false,
-    disablePadding: false,
-    label: "Country"
-  }
+  // {
+  //   id: "city",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "City"
+  // },
+  // {
+  //   id: "country",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "Country"
+  // }
 ];
 
 interface EnhancedTableProps {
@@ -165,7 +176,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -175,7 +186,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               "aria-label": "select all desserts"
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -258,13 +269,21 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     </Toolbar>
   );
 }
-export default function EmployeesTable() {
+
+interface EmployeesTableProps{
+  handleViewEmployee: (id: number) => void,
+  handleEditEmployee: (id: number) => void
+  handleDeleteEmployee: (id: number) => void
+}
+export default function EmployeesTable(props: EmployeesTableProps) {
+  const {handleViewEmployee, handleEditEmployee, handleDeleteEmployee} = props;
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Employee>("cnic");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
 
   const [employees, setEmployees] = React.useState<Employee[]>([]);
 
@@ -280,7 +299,7 @@ export default function EmployeesTable() {
 
   React.useEffect(() => {
     getEmployeesData();
-    console.log("..............",employees);
+    console.log("..............", employees);
   }, []);
 
   const handleRequestSort = (
@@ -350,6 +369,8 @@ export default function EmployeesTable() {
     [order, orderBy, page, rowsPerPage, employees]
   );
 
+  
+
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -376,15 +397,15 @@ export default function EmployeesTable() {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
+                    // onClick={(event) => handleClick(event, row.id)}
+                    // role="checkbox"
+                    // aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.id}
-                    selected={isItemSelected}
+                    // selected={isItemSelected}
                     sx={{ cursor: "pointer" }}
                   >
-                    <TableCell padding="checkbox">
+                    {/* <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
@@ -392,23 +413,41 @@ export default function EmployeesTable() {
                           "aria-labelledby": labelId
                         }}
                       />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       padding="none"
                     >
-                      {row.first_name}
-                    </TableCell>
-                    <TableCell align="right">{row.last_name}</TableCell>
-                    <TableCell align="right">{row.email}</TableCell>
-                    <TableCell align="right">{row.designation}</TableCell>
-                    <TableCell align="right">{row.joining_date}</TableCell>
-                    <TableCell align="right">{row.cnic}</TableCell>
-                    <TableCell align="right">{row.city}</TableCell>
-                    <TableCell align="right">{row.country}</TableCell>
+                      {/* <Link to={"/"} > */}
+                      {`${row.first_name}, ${row.last_name}`}
+                      {/* </Link> */}
 
+                    </TableCell>
+                    <TableCell align="left">{row.email}</TableCell>
+                    <TableCell align="left">{row.designation}</TableCell>
+                    <TableCell align="left">{row.joining_date}</TableCell>
+                    <TableCell align="left">{row.cnic}</TableCell>
+                    <TableCell align="left">
+                      <Tooltip title="view">
+                        {/* <IconButton onClick={() => { handleViewEmployee(row.id) }}>
+                          <VisibilityIcon />
+                        </IconButton> */}
+                        <Link to={`/employee-detail?employeeid=${row.id}`}><VisibilityIcon /></Link>
+                      </Tooltip>
+                      <Tooltip title="edit">
+                        <IconButton onClick={() => { handleEditEmployee(row.id) }}>
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete">
+                        <IconButton onClick={() => { handleDeleteEmployee(row.id) }}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -438,6 +477,11 @@ export default function EmployeesTable() {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       />
+        {/* <AlertDialog 
+          modalText="sdsadasdsda"
+          open={openDeleteModal}
+          setOpen={setOpenDeleteModal}
+        /> */}
     </Box>
   );
 }

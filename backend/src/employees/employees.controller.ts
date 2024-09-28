@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Put, Query, Request } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Patch, Post, Put, Query, Request } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { EmployeesService } from './employees.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -33,20 +33,29 @@ export class EmployeesController {
         return this.employeeService.update(+id, { isActive: false }, req.user.email);
     }
 
+    @Get('employee/:id')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'get the record of employee by id' })
+    getEmployee(@Param('id') id: number) {
+        console.log("id is : ", id);
+        if(isNaN(id)) throw new BadRequestException();//return {error: "Not a number"};
+        return this.employeeService.findEmployee(id);
+    }
+
     @Get()
     @ApiBearerAuth()
     @ApiOperation({ summary: 'get the record of employee under current company' })
     getEmployees(
         @Query('page') page: number,
         @Query('limit') limit: number,
-    ){
+    ) {
         return this.employeeService.findAll(page, limit);
     }
 
     @Get("addition-roles")
     @ApiBearerAuth()
-    @ApiOperation({ summary: 'get the record of additional role of employees'})
-    getAdditionalRole(){
+    @ApiOperation({ summary: 'get the record of additional role of employees' })
+    getAdditionalRole() {
         return this.employeeService.getAllAdditionalRole();
     }
 
