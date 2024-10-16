@@ -3,11 +3,11 @@ import { FinanceService } from './finance.service';
 import { FinanceController } from './finance.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Finance } from './entities/finance.entity';
-import { AdminsModule } from 'src/admins/admins.module';
+import { CompaniesModule } from 'src/companies/companies.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Finance]),
-    AdminsModule],
+    CompaniesModule],
   controllers: [FinanceController],
   providers: [FinanceService],
 })

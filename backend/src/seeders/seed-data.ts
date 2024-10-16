@@ -20,7 +20,8 @@ export async function seedData(dataSource: DataSource): Promise<void> {
   }
 
   //seed finance_categories
-  const financeCategoriesRepository = dataSource.getRepository(FinanceCategories);
+  const financeCategoriesRepository =
+    dataSource.getRepository(FinanceCategories);
 
   const financeCategoriesList = FINANCE_CATEGORIES_LIST;
   for(const financeCategory of financeCategoriesList){
