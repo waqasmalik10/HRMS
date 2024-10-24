@@ -5,13 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FinanceCategories } from 'src/finance-categories/entities/finance-category.entity';
 import { Repository } from 'typeorm';
 import { Finance } from './entities/finance.entity';
-import { AdminsService } from 'src/admins/admins.service';
+import { CompaniesService } from 'src/companies/companies.service';
 
 @Injectable()
 export class FinanceService {
 
   constructor(@InjectRepository(Finance) private readonly financeRepository: Repository<Finance>,
-  private readonly adminService: AdminsService,){}
+  private readonly adminService: CompaniesService,){}
 
   async create(createFinanceDto: CreateFinanceDto, adminEmailId: string) {
     const admin = await this.adminService.findAdminByEmail(adminEmailId);

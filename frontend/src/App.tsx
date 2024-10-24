@@ -8,7 +8,7 @@ import router from './Router';
 
 function App() {
 
-  const [user, setUser] = useState(
+  const [, setUser] = useState(
     JSON.parse(localStorage.getItem("user") as string)
   );
 
