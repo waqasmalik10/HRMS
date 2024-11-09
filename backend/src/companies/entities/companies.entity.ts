@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Employees } from 'src/employees/entities/employees.entity';
-import {AttendanceRaw} from "../../attendances/entities/attendance-raw.entity";
+import { AttendanceRaw } from '../../attendances/entities/attendance-raw.entity';
 
 @Entity('companies')
 export class Companies extends BaseEntity {
@@ -43,6 +43,9 @@ export class Companies extends BaseEntity {
   @Column()
   @Exclude()
   password: string;
+
+  @Column({ default: false })
+  is_active: boolean;
 
   @CreateDateColumn({ type: 'timestamptz' })
   @Exclude()

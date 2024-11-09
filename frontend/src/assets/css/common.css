@@ -1,0 +1,399 @@
+@font-face {
+	font-family: gilroy-bold;
+	src: url(../fonts/gilroy/Gilroy-Bold.ttf);
+}
+
+@font-face {
+	font-family: gilroy-light;
+	src: url(../fonts/gilroy/Gilroy-Light.ttf);
+}
+
+@font-face {
+	font-family: gilroy-medium;
+	src: url(../fonts/gilroy/Gilroy-Medium.ttf);
+}
+
+@font-face {
+	font-family: gilroy-regular;
+	src: url(../fonts/gilroy/Gilroy-Regular.ttf);
+}
+
+@font-face {
+	font-family: gilroy-semibold;
+	src: url(../fonts/gilroy/Gilroy-Semibold.ttf);
+}
+
+.font-gilroySemibold {
+	font-family: gilroy-semibold, sans-serif;
+}
+
+.font-gilroyRegular {
+	font-family: gilroy-regular, sans-serif;
+}
+
+.font-gilroyLight {
+	font-family: gilroy-light, sans-serif;
+}
+
+.font-gilroyMedium {
+	font-family: gilroy-medium, sans-serif;
+}
+
+
+.font-gilroyBold {
+	font-family: gilroy-bold, sans-serif;
+}
+
+.font-inter {
+	font-family: 'Inter', sans-serif;
+}
+
+.border-e0e0e0 {
+	border-color: #e0e0e0;
+}
+
+.text-212121 {
+	color: #212121;
+}
+
+.text-757575 {
+	color: #757575;
+}
+
+.ryeo-blue-bg {
+	background-color: #3575d5 !important;
+}
+
+.text-ryzeoBlue {
+	color: #3575d5;
+}
+
+.fs-13 {
+	font-size: 13px;
+}
+
+.fs-15 {
+	font-size: 15px;
+}
+
+.text-616161 {
+	color: #616161;
+}
+
+.text-bdbdbd {
+	color: #bdbdbd;
+}
+
+.bg-f6f7f9 {
+	background-color: #f6f7f9;
+}
+
+.shadow {
+	box-shadow: 0px 10px 20px rgba(151, 151, 151, 0.1);
+}
+
+button:focus {
+	outline: none;
+	opacity: 1;
+}
+
+button {
+	opacity: 1;
+  	transition: 0.3s;
+}
+
+button:hover {
+	opacity: 0.9;
+}
+
+
+.tabs-btn-active, .tabs-btn:focus {
+	color: #3575d5;
+	box-shadow: inset 0px -3px 0px #3575D5;
+}
+
+.border-eeeeee {
+	border-color: #eeeeee;
+}
+
+.text-18a558 {
+	color: #18A558
+}
+
+.bg-2ea1f9 {
+	background-color: #2ea1f9;
+}
+
+.bg-8fdbc0 {
+	background-color: #8fdbc0;
+}
+
+.bg-fbb846 {
+	background-color: #fbb846;
+}
+
+.bg-a292d8 {
+	background-color: #a292d8;
+}
+
+.fs-28 {
+	font-size: 28px;
+}
+
+.text-424242 {
+	color: #424242;
+}
+
+.text-fd445f {
+	color: #fd445f;
+}
+
+.border-bdbdbd {
+	border-color: #bdbdbd;
+}
+
+.border-ryzeo-blue {
+	border-color: #3575d5;
+}
+
+.fs-11 {
+	font-size: 11px;
+}
+
+.text-209d7d {
+	color: #209d7d;
+}
+
+.bg-d5f7eb {
+	background-color: #d5f7eb;
+}
+
+.bg-616161 {
+	background-color: #616161;
+}
+
+.page-active:focus {
+	background-color: #616161;
+}
+
+.text-9e9e9e {
+	color: #9e9e9e;
+}
+
+.bg-fdfdfd {
+	background-color: #fdfdfd;
+}
+
+.bg-f9f9f9 {
+	background-color: #f9f9f9;
+}
+
+input.sign-in:focus {
+	outline: none;
+}
+
+.bg-eef8ff {
+	background-color: #eef8ff;
+}
+
+.bg-f7f4ff {
+	background-color: #f7f4ff;
+}
+
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+
+.radio-btn input:checked ~ .checkmark:after {
+  display: block;
+}
+
+
+.radio-btn .checkmark:after {
+ 	top: 2px;
+	left: 2px;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #3575d5;
+}
+
+.checkBox input:checked ~ .checkmark {
+  background-color: #3575d5;
+  border: 0px;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkBox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkBox .checkmark:after {
+  left: 4px;
+  top: 5px;
+  background-image: url('../create-blasts/images/checkbox-check.png');
+  background-repeat: no-repeat;
+  width: 11px;
+  height: 9px;
+}
+
+.checkBox .checkmark {
+	top: 3px;
+}
+
+select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+}
+
+/* For IE10 */	
+select::-ms-expand {
+  display: none;
+}
+
+.boxShadow {
+	box-shadow: 0px 2px 8px rgba(64, 68, 82, 0.03), 0px 0px 0px 1px rgba(64, 68, 82, 0.1), 0px 2px 2px rgba(0, 0, 0, 0.08);
+}
+
+.email-performance-box {
+    box-shadow: inset 0px -1px 0px #e0e0e0, inset -1px 0px 0px #e0e0e0;
+    border-radius: 8px 0px 0px 0px;
+}
+
+.email-performance-box1 {
+    box-shadow: inset 0px -1px 0px #e0e0e0, inset 0px 0px 0px #e0e0e0;
+    border-radius: 8px 0px 0px 0px;
+}
+
+.email-performance-box2 {
+    box-shadow: inset 0px 0px 0px #e0e0e0, inset -1px 0px 0px #e0e0e0;
+    border-radius: 8px 0px 0px 0px;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+/*Modals css*/
+
+.leaveReview_modal {
+    visibility: hidden;
+    opacity: 0;
+    background: rgba(77, 77, 77, .7);
+    transition: all .4s;
+    z-index: 9999;
+}
+
+.leaveReview_modal:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.leaveReview_modal:target>.closeoverlay {
+    display: block;
+}
+
+
+.leaveReview_modal-mobile {
+    visibility: hidden;
+    opacity: 0;
+    background: rgba(77, 77, 77, .7);
+    transition: all .4s;
+    z-index: 9999;
+}
+
+.leaveReview_modal-mobile:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.emailView_modal {
+    visibility: hidden;
+    opacity: 0;
+    background: rgba(77, 77, 77, .7);
+    transition: all .4s;
+    z-index: 9999;
+}
+
+.emailView_modal:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.emailView_modal:target>.closeoverlay {
+    display: block;
+}
+
+
+.emailView_modal-mobile {
+    visibility: hidden;
+    opacity: 0;
+    background: rgba(77, 77, 77, .7);
+    transition: all .4s;
+    z-index: 9999;
+}
+
+.emailView_modal-mobile:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+/*Modals css ends*/
+
+.prfile-dropDown {
+	display: block !important;
+}
+
+.tabs-btn.selected {
+	color: #3575d5;
+	box-shadow: inset 0px -3px 0px #3575D5;
+}
+
+.dropdown-show-hide {
+	height: 0;
+	overflow: hidden;
+	transition: height 0.5s;
+	box-shadow: 0px 2px 10px 0px #0000001A;
+	/* box-shadow: 0px 0px 2px 0px #00000033; */
+}
+
+.show-dropdown .dropdown-show-hide {
+	height: auto;
+}
+
+.scroll-bar::-webkit-scrollbar {
+    display: block;
+}
+
+.scroll-bar::-webkit-scrollbar {
+	width: 4px;
+	border-radius: 10px;
+  }
+  
+  /* Track */
+ 
+   
+  /* Handle */
+  .scroll-bar::-webkit-scrollbar-thumb {
+	background: #888; 
+  }
+  
+  /* Handle on hover */
+  .scroll-bar::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+  }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AdminSignupDto } from '../auth/dto/admin-signup.dto';
+import { CompanySignupDto } from '../auth/dto/admin-signup.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Companies } from './entities/companies.entity';
 import { Repository } from 'typeorm';
@@ -22,8 +22,8 @@ export class CompaniesService {
     });
   }
 
-  async create(adminSignupDto: AdminSignupDto): Promise<Companies> {
-    const company: Companies = this.companyRepositry.create(adminSignupDto);
+  async create(companySignupDto: CompanySignupDto): Promise<Companies> {
+    const company: Companies = this.companyRepositry.create(companySignupDto);
     await company.save();
     return company;
   }

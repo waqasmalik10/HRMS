@@ -27,6 +27,8 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
+      // Just beware that enableImplicitConversion: true could result in quite weird behaviour of plainToInstance. Spent quite a lot of time trying to find out the origin of the issue I encountered.
+      // transformOptions: { enableImplicitConversion: true },
     }),
   );
 
