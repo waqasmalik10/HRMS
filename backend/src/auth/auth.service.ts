@@ -3,9 +3,9 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AdminSignupDto } from './dto/admin-signup.dto';
+import { CompanySignupDto } from './dto/admin-signup.dto';
 import { JwtService } from '@nestjs/jwt';
-import { AdminSigninDto } from './dto/admin-signin.dto';
+import { SigninDto } from './dto/signin.dto';
 import { CompaniesService } from '../companies/companies.service';
 import { Companies } from '../companies/entities/companies.entity';
 import { PasswordChangeDto } from './dto/password-change.dto';
@@ -17,23 +17,31 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signup(adminSignupDto: AdminSignupDto): Promise<Companies> {
-    const { email } = adminSignupDto;
+  async signup(companySignupDto: CompanySignupDto): Promise<Companies> {
+    const { email } = companySignupDto;
     const existingCompany = await this.companiesService.findAdminByEmail(email);
     if (existingCompany)
       throw new BadRequestException(
         `Account is already registered with this email.`,
       );
-    return this.companiesService.create(adminSignupDto);
+    return this.companiesService.create(companySignupDto);
   }
 
-  async signin(adminSigninDto: AdminSigninDto) {
-    const { email, password } = adminSigninDto;
-    const company = await this.companiesService.findAdminByEmail(email);
-    if (!company || !(await company.validatePassword(password)))
+  async signin(signinDto: SigninDto) {
+    const { email, password, is_company_login } = signinDto;
+    // For now, we are just bypassing for employee login. we will handle regular employees login later.
+    const user = await (is_company_login
+      ? this.companiesService.findAdminByEmail(email)
+      : Promise.resolve());
+    if (!user || !(await user.validatePassword(password)))
       throw new UnauthorizedException(`Email or password is wrong`);
 
-    const payload = { sub: company.id, email: company.email };
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      name: user.name,
+      is_company: is_company_login,
+    };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

@@ -9,7 +9,7 @@ export class CreateSingleAttendanceRawDto {
   readonly employee_id: number;
 
   @IsNumber()
-  readonly status: number;
+  readonly status: number; // status 0 means check-in and status 1 means check-out.
 
   @Transform(({ value }) => {
     const isValidDate = isISO8601(value, {

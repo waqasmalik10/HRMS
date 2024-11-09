@@ -57,6 +57,9 @@ export class Employees extends BaseEntity {
   @Column()
   current_base_salary: number;
 
+  @Column({ default: 0 })
+  medical_allowance_amount: number;
+
   @Column({ type: 'timestamptz' })
   joining_date: Date;
 
