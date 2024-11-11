@@ -110,6 +110,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.PASSWORD]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.PASSWORD] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.PASSWORD]
+                                    ? <span>{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.PASSWORD]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -127,6 +131,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID]
+                                    ? <span>{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
