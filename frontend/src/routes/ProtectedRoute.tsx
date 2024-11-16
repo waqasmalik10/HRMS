@@ -3,7 +3,7 @@ import {useAuth} from "../hooks/authProvider.tsx";
 
 const ProtectedRoute = () => {
   const user = useAuth();
-  if (!user.access_token) return <Navigate to="/signin" replace />;
+  if (!user.access_token || !user.user || Object.keys(user.user).length===0) return <Navigate to="/signin" replace />;
   return <Outlet />;
 };
 

@@ -11,7 +11,7 @@ import { Transform, Type } from 'class-transformer';
 export class CreateEmployeeDto {
   @IsNumber()
   @Transform(({ value }) => Number(value))
-  readonly employee_id: number;
+  readonly employee_code: number;
 
   @IsEmail()
   readonly email: string;

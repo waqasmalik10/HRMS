@@ -14,6 +14,7 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { EmployeesService } from './employees.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { GetAllEmployeesDTO } from './dto/get-all-employees.dto';
 
 @Controller('employees')
 @ApiTags('Employees')
@@ -24,7 +25,6 @@ export class EmployeesController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create new Employee under current company.' })
   create(@Body() createEmployeeDto: CreateEmployeeDto, @Request() req) {
-    console.log(createEmployeeDto, '>>>>>>>>>>>>>');
     return this.employeeService.create(createEmployeeDto, req.user.email);
   }
 
@@ -62,8 +62,8 @@ export class EmployeesController {
   @Get()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get the record of employee under current company' })
-  getEmployees(@Query('page') page: number, @Query('limit') limit: number) {
-    return this.employeeService.findAll(page, limit);
+  getEmployees(@Query() query: GetAllEmployeesDTO, @Request() req) {
+    return this.employeeService.findAll(req.user.id, query.offset, query.limit);
   }
 
   @Get('addition-roles')

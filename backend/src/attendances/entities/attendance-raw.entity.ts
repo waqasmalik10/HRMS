@@ -7,10 +7,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Companies } from '../../companies/entities/companies.entity';
-import {Exclude} from "class-transformer";
+import { Exclude } from "class-transformer";
 
 @Entity()
-@Index(['employee_id', 'status', 'date', 'companies'], { unique: true })
+@Index(['employee_code', 'status', 'date', 'companies'], { unique: true })
 export class AttendanceRaw extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,7 +22,7 @@ export class AttendanceRaw extends BaseEntity {
   timestamp: Date;
 
   @Column()
-  employee_id: number;
+  employee_code: number;
 
   @Column({ nullable: false, default: 0 })
   status: number;

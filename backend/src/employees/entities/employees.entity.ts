@@ -10,6 +10,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { AdditionalRoles } from './additional-roles.entity';
@@ -21,14 +22,14 @@ export class Employees extends BaseEntity {
   id: number;
 
   @Column({ unique: true })
-  employee_id: number;
+  employee_code: number;
 
   @Column({ unique: true })
   email: string;
 
   @Exclude()
   @Column()
-  password: string; // to be added later. For now, a default value will be added `qwQW12!@`
+  password: string;
 
   @Column()
   first_name: string;
@@ -132,7 +133,9 @@ export class Employees extends BaseEntity {
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
 
+  @Exclude()
   @ManyToOne(() => Companies, (company) => company.employees)
+  @JoinColumn()
   companies: Companies;
 
   @BeforeInsert()

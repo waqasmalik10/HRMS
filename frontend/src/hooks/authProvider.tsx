@@ -30,7 +30,7 @@ const AuthProvider: React.FC<authProviderProps> = props => {
             const res = await http.post('/auth/signin', data);
             if(res.data) {
                 setAccessToken(res.data.access_token);
-                localStorage.setItem("access_token", JSON.stringify(res.data.access_token));
+                localStorage.setItem("access_token", res.data.access_token);
                 http.setAuthToken(res.data.access_token);
                 // get user data from payload of token
                 setUser( parseJwt(res.data.access_token) );

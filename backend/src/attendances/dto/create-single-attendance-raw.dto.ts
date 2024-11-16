@@ -6,7 +6,7 @@ export class CreateSingleAttendanceRawDto {
   readonly serial_number: number;
 
   @IsNumber()
-  readonly employee_id: number;
+  readonly employee_code: number;
 
   @IsNumber()
   readonly status: number; // status 0 means check-in and status 1 means check-out.
