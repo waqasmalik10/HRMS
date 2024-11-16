@@ -21,12 +21,14 @@ export class EmployeesService {
     createEmployeeDto: CreateEmployeeDto,
     adminEmail: string,
   ): Promise<Employees> {
-    const { email } = createEmployeeDto;
+    const { email, employee_code } = createEmployeeDto;
     const existingEmployee = await this.employeeRepository.findOne({
-      where: { email: email },
+      where: [{ email: email }, { employee_code: employee_code }],
     });
     if (existingEmployee)
-      throw new UnauthorizedException(`User ${email} already exists.`);
+      throw new UnauthorizedException(
+        `User ${email} or employee code ${employee_code} already exists.`,
+      );
 
     const employee: Employees =
       this.employeeRepository.create(createEmployeeDto);
@@ -49,7 +51,7 @@ export class EmployeesService {
     if (existingEmployee.companies.email !== adminEmail)
       throw new UnauthorizedException(`You are not allowed to edit this user.`);
 
-    const resp = await this.employeeRepository.update(id, updateEmployeeDto);
+    await this.employeeRepository.update(id, updateEmployeeDto);
 
     return await this.employeeRepository.findOne({ where: { id: id } });
   }
@@ -61,17 +63,18 @@ export class EmployeesService {
     return employee;
   }
   async findAll(
-    page = 1,
-    limit = 10,
+    company_id,
+    offset,
+    limit,
   ): Promise<{
     data: Employees[];
     total: number;
-    page: number;
+    offset: number;
     limit: number;
   }> {
     const [data, total] = await this.employeeRepository.findAndCount({
-      where: { isActive: true },
-      skip: page > 0 ? (page - 1) * limit : 0,
+      where: { companies: { id: company_id } },
+      skip: offset,
       take: limit,
       relations: {
         additional_roles: true,
@@ -81,7 +84,7 @@ export class EmployeesService {
     return {
       data,
       total,
-      page,
+      offset,
       limit,
     };
   }

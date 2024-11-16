@@ -9,7 +9,7 @@ export class Attendances extends BaseEntity {
   attendance_id: number;
 
   @Column()
-  employee_id: number;
+  employee_code: number;
 
   @Column({ type: 'timestamptz', nullable: true })
   check_in: Date;

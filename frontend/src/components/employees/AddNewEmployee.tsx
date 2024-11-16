@@ -1,24 +1,29 @@
+import {useState} from "react";
 import {useFormik} from 'formik';
 import http from "../../services/http";
 import {ADD_NEW_EMPLOYEES_FIELDS, ADD_NEW_EMPLOYEE_FIELDS_INITIAL_VALUES, validationSchema} from '../../formikFields/AddNewEmployee.fields';
+import {BANK_NAMES, DESIGNATIONS, COUNTRIES} from '../../consts/miscallenous'
 import Select from '../theme/Select/Select';
 import Button from "../theme/Button/Button";
 
 const AddNewEmployee = () => {
 
-    const BANK_NAMES = [{text: 'Meezan Bank Limited', value: 'Meezan Bank Limited'}];
-    const DESIGNATIONS = [{text: 'CEO', value: 'ceo'}];
+    const [formSubmissionError, setFormSubmissionError] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(false);
 
     const formik = useFormik({
         initialValues: ADD_NEW_EMPLOYEE_FIELDS_INITIAL_VALUES,
         validationSchema: validationSchema,
         onSubmit: async values => {
+            console.log("Form submitted")
             try {
-                const result = await http.post('/employees/', values);
-                console.log("result,", result);
+                await http.post('/employees/', values);
+                setSuccessMessage(true);
+                setFormSubmissionError(false);
             } catch(error) {
                 console.log('Something went wrong while creating employees.', error);
-
+                setSuccessMessage(false);
+                setFormSubmissionError(true);
             }
         }
     });
@@ -26,6 +31,10 @@ const AddNewEmployee = () => {
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className="space-y-12">
+
+                {successMessage && <p>Employee has been created successfully.</p>}
+
+                {formSubmissionError && <p>Something went wrong. Please try again later.</p>}
 
                 <div className="border-b border-gray-900/10 pb-12">
                     <h2 className="text-base/7 font-semibold text-gray-900">Personal Information</h2>
@@ -111,46 +120,49 @@ const AddNewEmployee = () => {
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.PASSWORD]}
                                 />
                                 {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.PASSWORD] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.PASSWORD]
-                                    ? <span>{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.PASSWORD]}</span>
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.PASSWORD]}</span>
                                     : null
                                 }
                             </div>
                         </div>
 
                         <div className="sm:col-span-3">
-                            <label htmlFor={ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID} className="block text-sm/6 font-medium text-gray-900">
-                                Employee Identifier
+                            <label htmlFor={ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_CODE} className="block text-sm/6 font-medium text-gray-900">
+                                Employee Code
                             </label>
                             <div className="mt-2">
                                 <input
                                     type="text"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                                    id={ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID}
-                                    name={ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID}
+                                    id={ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_CODE}
+                                    name={ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_CODE}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID]}
+                                    value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_CODE]}
                                 />
-                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID]
-                                    ? <span>{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID]}</span>
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_CODE] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_CODE]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_CODE]}</span>
                                     : null
                                 }
                             </div>
                         </div>
 
                         <div className="sm:col-span-3">
-                            <label htmlFor={ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION_ID} className="block text-sm/6 font-medium text-gray-900">
+                            <label htmlFor={ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION} className="block text-sm/6 font-medium text-gray-900">
                                 Designation
                             </label>
                             <div className="mt-2">
                                 <Select
                                     data={DESIGNATIONS}
-                                    name={ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION_ID}
-                                    id={ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION_ID}
+                                    name={ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION}
+                                    id={ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION_ID]}
+                                    value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION]}</span>
+                                    : null}
                             </div>
                         </div>
 
@@ -168,6 +180,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.CNIC]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.CNIC] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.CNIC]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.CNIC]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -186,6 +202,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.ID_CARD_DATE_OF_BIRTH]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.ID_CARD_DATE_OF_BIRTH] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.ID_CARD_DATE_OF_BIRTH]
+                                    ? formik.errors[ADD_NEW_EMPLOYEES_FIELDS.ID_CARD_DATE_OF_BIRTH]
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -204,6 +224,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.ACTUAL_DATE_OF_BIRTH]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.ACTUAL_DATE_OF_BIRTH] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.ACTUAL_DATE_OF_BIRTH]
+                                    ? formik.errors[ADD_NEW_EMPLOYEES_FIELDS.ACTUAL_DATE_OF_BIRTH]
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -214,7 +238,7 @@ const AddNewEmployee = () => {
                             Hobbies
                             <div className="mt-2">
                                 <input
-                                    type="date"
+                                    type="text"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                                     id={ADD_NEW_EMPLOYEES_FIELDS.HOBBIES}
                                     name={ADD_NEW_EMPLOYEES_FIELDS.HOBBIES}
@@ -222,6 +246,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.HOBBIES]}
                                 />
+                                {/*{formik.touched[ADD_NEW_EMPLOYEES_FIELDS.HOBBIES] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.HOBBIES]*/}
+                                {/*    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.HOBBIES]}</span>*/}
+                                {/*    : null*/}
+                                {/*}*/}
                             </div>
                         </div>
 
@@ -240,6 +268,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.VEHICLE_REGISTRATION_NUMBER]}
                                 />
+                                {/*{formik.touched[ADD_NEW_EMPLOYEES_FIELDS.VEHICLE_REGISTRATION_NUMBER] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.VEHICLE_REGISTRATION_NUMBER]*/}
+                                {/*    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.VEHICLE_REGISTRATION_NUMBER]}</span>*/}
+                                {/*    : null*/}
+                                {/*}*/}
                             </div>
                         </div>
 
@@ -267,6 +299,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.BANK_NAME]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.BANK_NAME] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_NAME]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_NAME]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -284,6 +320,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.BANK_ACCOUNT_TITLE]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.BANK_ACCOUNT_TITLE] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_ACCOUNT_TITLE]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_ACCOUNT_TITLE]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -301,6 +341,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.BANK_BRANCH_CODE]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.BANK_BRANCH_CODE] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_BRANCH_CODE]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_BRANCH_CODE]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -318,6 +362,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.BANK_ACCOUNT_NUMBER]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.BANK_ACCOUNT_NUMBER] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_ACCOUNT_NUMBER]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_ACCOUNT_NUMBER]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -335,6 +383,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.BANK_IBAN_NUMBER]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.BANK_IBAN_NUMBER] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_IBAN_NUMBER]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.BANK_IBAN_NUMBER]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -361,6 +413,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.INITIAL_BASE_SALARY]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.INITIAL_BASE_SALARY] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.INITIAL_BASE_SALARY]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.INITIAL_BASE_SALARY]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -378,6 +434,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.CURRENT_BASE_SALARY]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.CURRENT_BASE_SALARY] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.CURRENT_BASE_SALARY]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.CURRENT_BASE_SALARY]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -395,6 +455,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.JOINING_DATE]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.JOINING_DATE] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.JOINING_DATE]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.JOINING_DATE]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -431,6 +495,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.LAST_INCREMENT_DATE]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.LAST_INCREMENT_DATE] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.LAST_INCREMENT_DATE]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.LAST_INCREMENT_DATE]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -449,6 +517,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.LAST_INCREMENT_AMOUNT]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.LAST_INCREMENT_AMOUNT] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.LAST_INCREMENT_AMOUNT]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.LAST_INCREMENT_AMOUNT]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -467,6 +539,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.MEDICAL_ALLOWANCE_AMOUNT]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.MEDICAL_ALLOWANCE_AMOUNT] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.MEDICAL_ALLOWANCE_AMOUNT]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.MEDICAL_ALLOWANCE_AMOUNT]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -495,6 +571,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.HOME_ADDRESS]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.HOME_ADDRESS] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.HOME_ADDRESS]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.HOME_ADDRESS]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -514,6 +594,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.CITY]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.CITY] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.CITY]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.CITY]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -532,6 +616,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.STATE]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.STATE] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.STATE]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.STATE]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -550,6 +638,10 @@ const AddNewEmployee = () => {
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.POSTAL_CODE]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.POSTAL_CODE] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.POSTAL_CODE]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.POSTAL_CODE]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 
@@ -560,13 +652,17 @@ const AddNewEmployee = () => {
                             </label>
                             <div className="mt-2">
                                 <Select
-                                    data={[{value: 'Pakistan', text: 'Pakistan'}]}
+                                    data={ COUNTRIES }
                                     id={ADD_NEW_EMPLOYEES_FIELDS.COUNTRY}
                                     name={ADD_NEW_EMPLOYEES_FIELDS.COUNTRY}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={formik.values[ADD_NEW_EMPLOYEES_FIELDS.COUNTRY]}
                                 />
+                                {formik.touched[ADD_NEW_EMPLOYEES_FIELDS.COUNTRY] && formik.errors[ADD_NEW_EMPLOYEES_FIELDS.COUNTRY]
+                                    ? <span className="error">{formik.errors[ADD_NEW_EMPLOYEES_FIELDS.COUNTRY]}</span>
+                                    : null
+                                }
                             </div>
                         </div>
 

@@ -1,11 +1,9 @@
-import { IsEmail, IsNumber, IsString } from "class-validator";
 import { OmitType, PartialType } from '@nestjs/swagger';
-import {CreateEmployeeDto} from './create-employee.dto'
+import { CreateEmployeeDto } from './create-employee.dto';
 
 export class UpdateEmployeeDto extends PartialType(
-    OmitType(CreateEmployeeDto, ['email', 'password', 'employee_id'] as const),
-  ) {}
-  
+  OmitType(CreateEmployeeDto, ['email', 'password', 'employee_code'] as const),
+) {}
 
 //     @IsEmail()
 //     readonly email: string;
@@ -18,7 +16,7 @@ export class UpdateEmployeeDto extends PartialType(
 
 //     @IsString()
 //     readonly bank_name: string;
-    
+
 //     @IsString()
 //     readonly bank_account_title: string;
 

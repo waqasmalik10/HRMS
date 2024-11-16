@@ -2,7 +2,8 @@ import axios from "axios";
 
 const baseURL: string = import.meta.env.VITE_APP_BACKEND_API_URL || "";
 
-const userToken = JSON.parse(localStorage.getItem("access_token") || "{}");
+// const userToken = JSON.parse(localStorage.getItem("access_token") || "{}");
+const userToken = localStorage.getItem("access_token");
 
 const axiosInstance = axios.create({
   baseURL,

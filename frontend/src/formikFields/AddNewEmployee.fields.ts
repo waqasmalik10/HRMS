@@ -5,8 +5,8 @@ const ADD_NEW_EMPLOYEES_FIELDS: { [key: string]: string} =  {
     LAST_NAME: 'last_name',
     EMAIL: 'email',
     PASSWORD: 'password',
-    EMPLOYEE_ID: 'employee_id',
-    DESIGNATION_ID: 'designation',
+    EMPLOYEE_CODE: 'employee_code',
+    DESIGNATION: 'designation',
     CNIC: 'cnic',
     ID_CARD_DATE_OF_BIRTH: 'id_card_date_of_birth',
     ACTUAL_DATE_OF_BIRTH: 'actual_date_of_birth',
@@ -33,7 +33,7 @@ const ADD_NEW_EMPLOYEES_FIELDS: { [key: string]: string} =  {
 
 const ADD_NEW_EMPLOYEE_FIELDS_INITIAL_VALUES: { [key: string]: string } = {};
 Object.keys(ADD_NEW_EMPLOYEES_FIELDS).map( (key: string)=> {
-    ADD_NEW_EMPLOYEE_FIELDS_INITIAL_VALUES[ ADD_NEW_EMPLOYEES_FIELDS[key] ] = '';
+    ADD_NEW_EMPLOYEE_FIELDS_INITIAL_VALUES[ ADD_NEW_EMPLOYEES_FIELDS[key] ] = 'qwQW12!@';
 });
 
 
@@ -42,9 +42,9 @@ const validationSchema = Yup.object({
     [ADD_NEW_EMPLOYEES_FIELDS.LAST_NAME]: Yup.string().min(3, "Last name should be min. 3 characters long.").max(50, "Last name should be max. 50 characters long.").required("Last name is required."),
     [ADD_NEW_EMPLOYEES_FIELDS.EMAIL]: Yup.string().email("Please enter a valid email address.").required("Email address is required."),
     [ADD_NEW_EMPLOYEES_FIELDS.PASSWORD]: Yup.string().min(8, "Password should be min. 8 characters.").max(12, "Password should be max. 12 characters.").required("Password is required."),
-    [ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_ID]: Yup.number().typeError("Employee ID must be a number (matching the number id value from attendance machine)").required("Employee Id is required."),
-    [ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION_ID]: Yup.number().typeError("Designation ID should be a number").required("Designation is required."),
-    [ADD_NEW_EMPLOYEES_FIELDS.CNCI]: Yup.string().min(15, "CNIC should be 15 characters long").max(15, "CNIC should be 15 characters long").required("CNIC is required."),
+    [ADD_NEW_EMPLOYEES_FIELDS.EMPLOYEE_CODE]: Yup.number().typeError("Employee Code must be a number (matching the number id value from attendance machine)").required("Employee Id is required."),
+    [ADD_NEW_EMPLOYEES_FIELDS.DESIGNATION]: Yup.string().required("Designation is required."),
+    [ADD_NEW_EMPLOYEES_FIELDS.CNIC]: Yup.string().min(15, "CNIC should be 15 characters long").max(15, "CNIC should be 15 characters long").required("CNIC is required."),
     [ADD_NEW_EMPLOYEES_FIELDS.ID_CARD_DATE_OF_BIRTH]: Yup.date().typeError("DOB should be a valid date").required("DOB is required."),
     [ADD_NEW_EMPLOYEES_FIELDS.ACTUAL_DATE_OF_BIRTH]: Yup.date().typeError("DOB should be a valid date").required("DOB is required."),
     // [ADD_NEW_EMPLOYEES_FIELDS.HOBBIES]: Yup.string(),

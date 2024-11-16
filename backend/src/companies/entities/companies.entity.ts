@@ -55,12 +55,14 @@ export class Companies extends BaseEntity {
   @Exclude()
   updatedAt: Date;
 
+  @Exclude()
   @OneToMany(() => Employees, (emp) => emp.companies, {
     cascade: true,
     eager: true,
   })
   employees: Employees[];
 
+  @Exclude()
   @OneToMany(() => AttendanceRaw, (attendance) => attendance.companies, {
     cascade: true,
     eager: true,
