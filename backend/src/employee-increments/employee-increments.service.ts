@@ -8,16 +8,21 @@ import { EmployeesService } from 'src/employees/employees.service';
 
 @Injectable()
 export class EmployeeIncrementsService {
-
   constructor(
-    @InjectRepository(EmployeeIncrement) private readonly employeeIncrementRepository: Repository<EmployeeIncrement>,
+    @InjectRepository(EmployeeIncrement)
+    private readonly employeeIncrementRepository: Repository<EmployeeIncrement>,
     private readonly employeesService: EmployeesService,
-) { }
+  ) {}
 
-
-  async create(createEmployeeIncrementDto: CreateEmployeeIncrementDto, employeeId: number) {
-    const employee: Employees = await this.employeesService.getEmployeeById(employeeId);
-    const employeeIncrement = this.employeeIncrementRepository.create(createEmployeeIncrementDto);
+  async create(
+    createEmployeeIncrementDto: CreateEmployeeIncrementDto,
+    employeeId: number,
+  ) {
+    const employee: Employees =
+      await this.employeesService.getEmployeeById(employeeId);
+    const employeeIncrement = this.employeeIncrementRepository.create(
+      createEmployeeIncrementDto,
+    );
     employeeIncrement.employee = employee;
     await employeeIncrement.save();
     return employeeIncrement;
@@ -28,18 +33,28 @@ export class EmployeeIncrementsService {
   }
 
   async findOne(id: number): Promise<EmployeeIncrement> {
-    return await this.employeeIncrementRepository.findOne({where:{id: id}});
+    return await this.employeeIncrementRepository.findOne({
+      where: { id: id },
+    });
   }
 
-  async update(id: number, updateEmployeeIncrementDto: CreateEmployeeIncrementDto) {
-    const resp = await this.employeeIncrementRepository.update(id, updateEmployeeIncrementDto);
-    console.log("updating response: ", resp);
-    return await this.employeeIncrementRepository.findOne({where:{id: id}});
+  async update(
+    id: number,
+    updateEmployeeIncrementDto: CreateEmployeeIncrementDto,
+  ) {
+    const resp = await this.employeeIncrementRepository.update(
+      id,
+      updateEmployeeIncrementDto,
+    );
+    console.log('updating response: ', resp);
+    return await this.employeeIncrementRepository.findOne({
+      where: { id: id },
+    });
   }
 
   async remove(id: number) {
     const resp = await this.employeeIncrementRepository.delete(id);
-    console.log("deleting response: ", resp);
-    return "deleted successfully.";
+    console.log('deleting response: ', resp);
+    return 'deleted successfully.';
   }
 }

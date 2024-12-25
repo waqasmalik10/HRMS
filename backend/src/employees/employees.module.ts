@@ -13,6 +13,6 @@ import { AdditionalRoles } from './entities/additional-roles.entity';
   ],
   providers: [EmployeesService],
   controllers: [EmployeesController],
-  exports: [EmployeesService]
+  exports: [EmployeesService],
 })
 export class EmployeesModule {}

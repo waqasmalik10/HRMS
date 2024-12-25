@@ -3,9 +3,17 @@ export const BANK_NAMES = [
 ];
 
 export const DESIGNATIONS = [
-    {text: 'CEO', value: '1'}, {text: 'Employee', value: '2'}
+    {text: 'CEO', value: 'ceo'}, {text: 'Employee', value: 'Employee'}, {text: 'Developer', value: 'Developer'}
 ];
 
 export const COUNTRIES = [
     {text: 'Pakistan', value: 'Pakistan'}, {text: 'USA', value: 'USA'}
 ];
+
+export const DEFAULT_DATE_FORMAT = "MMM DD, YYYY";
+export const DEFAULT_TIME_FORMAT = "hh:mm A";
+
+export enum ATTENDANCE_CHECK_IN_CHECKOUT_STATUS {
+    CHECK_IN = 0,
+    CHECK_OUT = 1,
+}

@@ -15,7 +15,6 @@ const AddNewEmployee = () => {
         initialValues: ADD_NEW_EMPLOYEE_FIELDS_INITIAL_VALUES,
         validationSchema: validationSchema,
         onSubmit: async values => {
-            console.log("Form submitted")
             try {
                 await http.post('/employees/', values);
                 setSuccessMessage(true);
