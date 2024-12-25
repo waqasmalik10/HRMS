@@ -14,8 +14,9 @@ interface selectProps {
 }
 
 const Select = ({name, id, data, onChange, onBlur, value}: PropsWithChildren<selectProps>) => {
+    console.log(value, data);
     return (
-        <select name={name} id={id} onChange={onChange} onBlur={onBlur} defaultValue={value}>
+        <select name={name} id={id} onChange={onChange} onBlur={onBlur} value={value}>
                 {
                     data.map( d => {
                         return <option key={d.value} value={d.value}>

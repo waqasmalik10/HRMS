@@ -40,27 +40,26 @@ export class EmployeesService {
   async update(
     id: number,
     updateEmployeeDto: UpdateEmployeeDto,
-    adminEmail: string,
+    company_id: number,
   ): Promise<Employees> {
-    console.log('id', id, updateEmployeeDto);
     const existingEmployee = await this.employeeRepository.findOne({
-      where: { id: id },
-      relations: ['admin'],
+      where: { id: id, companies: { id: company_id } },
     });
 
-    if (existingEmployee.companies.email !== adminEmail)
+    if (!existingEmployee)
       throw new UnauthorizedException(`You are not allowed to edit this user.`);
 
     await this.employeeRepository.update(id, updateEmployeeDto);
 
-    return await this.employeeRepository.findOne({ where: { id: id } });
+    return await this.employeeRepository.findOne({
+      where: { id: id, companies: { id: company_id } },
+    });
   }
 
-  async findEmployee(id: number): Promise<Employees> {
-    const employee = await this.employeeRepository.findOne({
-      where: { id: id },
+  async findEmployee(id: number, company_id: number): Promise<Employees> {
+    return await this.employeeRepository.findOne({
+      where: { id: id, companies: { id: company_id } },
     });
-    return employee;
   }
   async findAll(
     company_id,
@@ -89,8 +88,21 @@ export class EmployeesService {
     };
   }
 
+  // TOD: Add company_id as well
   async getEmployeeById(employeeId: number): Promise<Employees> {
     return await this.employeeRepository.findOne({ where: { id: employeeId } });
+  }
+
+  async getEmployeeByEmployeeCode(
+    employeeCode: number,
+    company_id: number,
+  ): Promise<Employees> {
+    return await this.employeeRepository.findOne({
+      where: {
+        employee_code: employeeCode,
+        companies: { id: company_id },
+      },
+    });
   }
 
   async getAllAdditionalRole(): Promise<AdditionalRoles[]> {

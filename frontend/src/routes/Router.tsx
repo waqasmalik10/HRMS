@@ -1,9 +1,10 @@
 import {createBrowserRouter} from 'react-router-dom';
-import Dashboard from '../components/dashboard/Dashboard.tsx';
-import SignIn from '../components/login/signin.tsx';
-import ProtectedRoute from './ProtectedRoute.tsx';
-import Employees from '../components/employees/Employees.tsx';
-import EmployeeDetail from '../components/employees/EmployeeDetail.tsx';
+import Dashboard from '../components/dashboard/Dashboard';
+import SignIn from '../components/login/signin';
+import ProtectedRoute from './ProtectedRoute';
+import Employees from '../components/employees/Employees';
+import EmployeeDetail from '../components/employees/EmployeeDetail';
+import Attendances from '../components/Attendances/Attendances';
 
 // Create the router configuration
 const router = createBrowserRouter(
@@ -31,6 +32,9 @@ const router = createBrowserRouter(
         {
           path: '/employee-detail',
           element: <EmployeeDetail />
+        }, {
+        path: '/attendances',
+          element: <Attendances />
         }
       ]
     },

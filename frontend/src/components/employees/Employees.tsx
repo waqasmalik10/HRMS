@@ -3,10 +3,12 @@ import Theme from '../theme/theme';
 import Button from '../theme/Button/Button';
 import Modal from '../theme/Modal/Modal';
 import AddNewEmployee from "./AddNewEmployee";
+import EditEmployee from './EditEmployee';
 import {useEffect, useState} from "react";
 import http from "../../services/http";
 
 interface IEmployeeType {
+    id: number,
     first_name: string;
     last_name: string;
     email: string;
@@ -19,11 +21,16 @@ interface IEmployeeType {
     medical_allowance_amount: number;
     last_increment_amount: number;
     last_increment_date: Date;
+    id_card_date_of_birth: Date;
+    actual_date_of_birth: Date,
+
 }
 
 const Employees = () => {
 
-    const [showModal, setShowModal] = useState(false);
+    const [showAddEmployeeModal, setShowAddEmployeeModal] = useState(false);
+    const [showEditEmployeeModal, setShowEditEmployeeModal] = useState(false);
+    const [employeeIdForEditModal, setEmployeeIdForEditModal] = useState<number>(0);
     const [employees, setEmployees] = useState<IEmployeeType[]>([]);
 
     const DATE_FORMAT = "MMM DD, YYYY";
@@ -31,10 +38,22 @@ const Employees = () => {
     useEffect(() => {
         http.get("/employees")
             .then(response => {
-                setEmployees(response.data.data);
+                if(response && response.data) {
+                    setEmployees(response.data.data);
+                }
             })
             .catch(err => console.log('error while loading employees', err));
     }, []);
+
+    useEffect(() => {
+        // if modal for edit employee form is closed, we should also set selected employee id to zero to avoid the case where it may be showing old employee details in edit modal.
+        if(!showEditEmployeeModal) setEmployeeIdForEditModal(0);
+    }, [showEditEmployeeModal]);
+
+    const editEmployeeHandler = (employeeId: number) => {
+        setEmployeeIdForEditModal(employeeId);
+        setShowEditEmployeeModal(true);
+    }
 
     return (
         <Theme>
@@ -45,7 +64,7 @@ const Employees = () => {
                             <h2 className="text-xl sm:leading-5 leading-3 text-212121 font-gilroyBold">Employees</h2>
                         </div>
                         <div className="sm:pl-3 relative">
-                            <Button type="button" onClick={() => setShowModal(true)}>Add Employee</Button>
+                            <Button type="button" onClick={() => setShowAddEmployeeModal(true)}>Add Employee</Button>
                         </div>
                     </div>
                     <div className="flex justify-between items-center mt-7">
@@ -79,7 +98,7 @@ const Employees = () => {
                                                 className="py-3 pl-3 pr-3 text-left fs-13 font-medium text-757575 w-3/4">Name
                                             </th>
                                             <th scope="col"
-                                                className="py-3 pl-3 pr-3 text-left fs-13 font-medium text-757575 w-3/4">Employee
+                                                className="py-3 pl-3 pr-3 text-left fs-13 font-medium text-757575 w-[100px]">Employee
                                                 Code
                                             </th>
                                             <th scope="col"
@@ -92,11 +111,10 @@ const Employees = () => {
                                             </th>
                                             <th scope="col"
                                                 className="py-3 pl-3 pr-3 fs-13 font-medium text-757575 text-left  min-w-[200px] w-[200px] lg:table-cell hidden">
-                                                Status
+                                                DOB
                                             </th>
                                             <th scope="col"
-                                                className="py-3 pl-3 pr-3  fs-13 font-medium text-757575 text-left w-[150px]"> Actions<img
-                                                src="images/down-arrow.png" className="inline-block  pl-2" alt="arrow"/>
+                                                className="py-3 pl-3 pr-3  fs-13 font-medium text-757575 text-left w-[150px]"> Actions
                                             </th>
                                         </tr>
                                         </thead>
@@ -130,7 +148,7 @@ const Employees = () => {
                                                             </div>
                                                         </td>
 
-                                                        <td className="whitespace-nowrap py-3 pl-3 pr-3 fs-13 font-medium text-616161 min-w-[200px] w-[200px] lg:table-cell hidden">
+                                                        <td className="whitespace-nowrap py-2 pl-2 pr-2 fs-13 font-medium text-616161 min-w-[150px] w-[200px] lg:table-cell hidden">
                                                             {employee.employee_code}
                                                         </td>
                                                         <td className="whitespace-nowrap py-3 pl-3 pr-3 fs-13 font-medium text-616161 min-w-[200px] w-[200px] md:table-cell hidden">
@@ -161,12 +179,14 @@ const Employees = () => {
 
                                                             </span>
                                                         </td>
-                                                        <td className="whitespace-nowrap py-3 pl-3 pr-3 fs-13 text-616161 sm:text-right text-left lg:min-w-[290px] lg:w-[290px] min-w-[150px] w-[150px]">
-                                                            <button
-                                                                className="text-sm font-medium leading-5 p-2 text-ryzeoBlue inline-block flex items-center">
-                                                                <img className="mr-1" src="images/edit-blue.png"/>
-                                                                Edit
-                                                            </button>
+                                                        <td className="whitespace-nowrap py-3 pl-3 pr-3 fs-13 text-616161 text-left lg:min-w-[150px] lg:w-[150px] min-w-[150px] w-[150px]">
+                                                            <Moment format={DATE_FORMAT} date={employee.id_card_date_of_birth} />
+                                                            <br />
+                                                            <span style={{fontSize: '11px'}}>Actual DOB: <Moment format={DATE_FORMAT} date={employee.actual_date_of_birth} /></span>
+                                                        </td>
+                                                        <td>
+                                                            <button className="btn btn-primary" onClick={()=>{}}>View</button>
+                                                            <button className="btn btn-primary" onClick={()=>editEmployeeHandler(employee.id)}>Edit</button>
                                                         </td>
                                                     </tr>
                                                 );
@@ -253,13 +273,27 @@ const Employees = () => {
 
 
                 <Modal
-                    open={showModal}
-                    setOpen={setShowModal}
+                    open={showAddEmployeeModal}
+                    setOpen={setShowAddEmployeeModal}
                     title="Add Employee"
                     subTitle="Fill up the form and submit to add employee."
                     showCloseButton={false}
                 >
                     <AddNewEmployee/>
+
+                </Modal>
+
+
+                <Modal
+                    open={showEditEmployeeModal && !!employeeIdForEditModal}
+                    setOpen={setShowEditEmployeeModal}
+                    title="Edit Employee"
+                    subTitle="Fill up the form and submit to update employee."
+                    showCloseButton={false}
+                >
+                    <EditEmployee
+                        id={employeeIdForEditModal}
+                    />
 
                 </Modal>
 

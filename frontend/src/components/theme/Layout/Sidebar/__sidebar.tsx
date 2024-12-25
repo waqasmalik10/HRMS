@@ -55,7 +55,7 @@ const Sidebar = () => {
                     </div>
 
                     <div className="border-b pb-2">
-                        <a href="#"
+                        <Link to="/attendances" 
                            className="flex justify-between items-center rounded py-2.5 px-3.5 group hover:bg-[#3575d5]">
                             <div className="flex items-center">
 									<span>
@@ -64,10 +64,9 @@ const Sidebar = () => {
 										<img className="w-4 h-4 group-hover:block hidden"
                                              src="images/sidebar/notification-white.png"/>
 									</span>
-                                <span
-                                    className="fs-13 font-medium leading-3 lg:block sm:hidden text-616161 pl-3 sidebar-links group-hover:text-white">Pop-Ups</span>
+                                <span className="fs-13 font-medium leading-3 lg:block sm:hidden text-616161 pl-3 sidebar-links group-hover:text-white">Attendances</span>
                             </div>
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="">

@@ -36,7 +36,7 @@ export class EmployeesController {
     @Body() updateEmployeeDto: UpdateEmployeeDto,
     @Request() req,
   ) {
-    return this.employeeService.update(+id, updateEmployeeDto, req.user.email);
+    return this.employeeService.update(+id, updateEmployeeDto, req.user.company_id);
   }
 
   @Patch('deactivate/:id')
@@ -50,13 +50,14 @@ export class EmployeesController {
     );
   }
 
-  @Get('employee/:id')
+  @Get(':id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get the record of employee by id' })
-  getEmployee(@Param('id') id: number) {
+  getEmployee(@Param('id') id: number, @Request() req) {
     console.log('id is : ', id);
     if (isNaN(id)) throw new BadRequestException(); //return {error: "Not a number"};
-    return this.employeeService.findEmployee(id);
+    console.log('id is : ', req.user);
+    return this.employeeService.findEmployee(id, req.user.company_id) || {};
   }
 
   @Get()

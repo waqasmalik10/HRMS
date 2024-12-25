@@ -21,6 +21,7 @@ export class Employees extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  // TODO: Should be a string?
   @Column({ unique: true })
   employee_code: number;
 
@@ -111,7 +112,7 @@ export class Employees extends BaseEntity {
 
   @OneToMany(
     () => AdditionalRoles,
-    (additionalRoles) => additionalRoles.employees,
+    (additionalRoles: AdditionalRoles) => additionalRoles.employees,
   )
   additional_roles: AdditionalRoles[];
 

@@ -1,13 +1,14 @@
 import {
   BaseEntity,
-  Column, CreateDateColumn,
+  Column,
+  CreateDateColumn,
   Entity,
   Index,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Companies } from '../../companies/entities/companies.entity';
-import { Exclude } from "class-transformer";
+import { Exclude } from 'class-transformer';
 
 @Entity()
 @Index(['employee_code', 'status', 'date', 'companies'], { unique: true })
@@ -18,11 +19,11 @@ export class AttendanceRaw extends BaseEntity {
   @Column({ nullable: true })
   serial_number: number;
 
-  @Column({ type: 'timestamptz' })
-  timestamp: Date;
-
   @Column()
   employee_code: number;
+
+  @Column({ type: 'timestamptz' })
+  timestamp: Date;
 
   @Column({ nullable: false, default: 0 })
   status: number;
